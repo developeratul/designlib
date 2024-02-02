@@ -1,7 +1,22 @@
-export default function SubmitResourcePage() {
+import { getAllCategories } from "@/actions/category.action";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default async function SubmitResourcePage() {
+  const categories = await getAllCategories();
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <main className="w-full flex justify-center py-24">
+      <Card className="w-full max-w-[450px]">
+        <CardHeader>
+          <CardTitle>Submit new Resource</CardTitle>
+          <CardDescription>
+            Contribute to the community by submitting a new resource that you find useful. We will
+            look into and approve it.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <h1>Content</h1>
+        </CardContent>
+      </Card>
+    </main>
   );
 }

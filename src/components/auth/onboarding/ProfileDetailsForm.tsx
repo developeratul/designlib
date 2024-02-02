@@ -1,6 +1,7 @@
 "use client";
 import { checkUsernameAvailability, submitProfileDetails } from "@/actions/auth.actions";
 import { profileDetailsFormSchema } from "@/app/auth/onboarding/constants";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,29 +13,52 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { StorageBucket } from "@/constants/supabase";
+import { generateUniqueFileName } from "@/helpers";
+import { getFileUrl } from "@/helpers/supabase";
+import { Database } from "@/types/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedValue } from "@mantine/hooks";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AlertCircleIcon, CheckIcon, Loader, Loader2 } from "lucide-react";
+import axios from "axios";
+import { AlertCircleIcon, CheckIcon, ImageIcon, Loader, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { ChangeEventHandler, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { v4 as uuid } from "uuid";
 import { z } from "zod";
 
-export default function ProfileDetailsForm() {
+export default function ProfileDetailsForm(props: {
+  providedUserData?: { display_name?: string; avatarUrl?: string };
+}) {
+  const { providedUserData } = props;
+  const supabase = createClientComponentClient<Database>();
+
   const form = useForm<z.infer<typeof profileDetailsFormSchema>>({
     resolver: zodResolver(profileDetailsFormSchema),
     defaultValues: {
       username: "",
-      display_name: "",
+      display_name: providedUserData?.display_name || "",
       bio: "",
       avatarPath: "",
     },
   });
   const [debouncedUsername] = useDebouncedValue(form.watch("username"), 500);
+
+  const avatarPath = form.watch("avatarPath");
+  const avatarPreviewUrl = useMemo(() => {
+    if (avatarPath) {
+      return getFileUrl(StorageBucket.Avatars, avatarPath);
+    }
+    if (providedUserData?.avatarUrl) {
+      return providedUserData.avatarUrl;
+    }
+  }, [providedUserData?.avatarUrl, avatarPath]);
 
   const isQueryEnabled = debouncedUsername.length > 0;
   const { data, isLoading, isError, error, isFetchedAfterMount } = useQuery({
@@ -62,8 +86,29 @@ export default function ProfileDetailsForm() {
       return form.setError("username", { message: "Username already taken" });
     }
 
+    let finalAvatarPath = values.avatarPath;
+
     try {
-      const { username } = await mutateAsync(values);
+      if (!avatarPath) {
+        if (providedUserData?.avatarUrl) {
+          const res = await axios.get(providedUserData.avatarUrl, { responseType: "blob" });
+          const { error, data } = await supabase.storage
+            .from(StorageBucket.Avatars)
+            .upload(`${uuid()}.jpg`, res.data);
+
+          if (error) {
+            return toast.error(error.message);
+          }
+
+          form.setValue("avatarPath", data.path);
+          finalAvatarPath = data.path;
+        }
+      }
+
+      const { username } = await mutateAsync({
+        ...values,
+        avatarPath: finalAvatarPath,
+      });
       toast.success("Profile details updated successfully");
       if (nextRoute) {
         router.push(nextRoute);
@@ -78,6 +123,30 @@ export default function ProfileDetailsForm() {
     }
   };
 
+  const handleAvatarChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const { files } = e.target;
+    if (files && files.length > 0 && files[0]) {
+      const file = files[0];
+      const fileName = generateUniqueFileName(file.name);
+
+      const { error, data } = await supabase.storage
+        .from(StorageBucket.Avatars)
+        .upload(fileName, file);
+
+      if (error) {
+        return toast.error(error.message);
+      }
+
+      form.setValue("avatarPath", data.path);
+      toast.success("Avatar uploaded successfully");
+
+      // Delete the old one if any
+      if (avatarPath) {
+        await supabase.storage.from(StorageBucket.Avatars).remove([avatarPath]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (isError) {
       toast.error(error.message);
@@ -88,6 +157,16 @@ export default function ProfileDetailsForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <div className="space-y-2">
+          <Label>Profile Avatar</Label>
+          <Avatar className="w-20 h-20">
+            <AvatarImage src={avatarPreviewUrl} />
+            <AvatarFallback>
+              <ImageIcon className="w-6 h-6 text-inherit" />
+            </AvatarFallback>
+          </Avatar>
+          <Input type="file" onChange={handleAvatarChange} />
+        </div>
         <FormField
           control={form.control}
           name="username"

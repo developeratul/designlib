@@ -8,7 +8,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 export default function AppProvider(props: AppProps) {
   const { children } = props;
   return (
-    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem enableColorScheme>
+    <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem enableColorScheme>
       <Toaster />
       <TanStackQueryProvider>
         <TooltipProvider>{children}</TooltipProvider>

@@ -1,6 +1,7 @@
 "use server";
 import { profileDetailsFormSchema } from "@/app/auth/onboarding/constants";
 import { usernameFieldSchema } from "@/constants";
+import { BAD_REQUEST_ACTION, UNAUTHORIZED_ACTION } from "@/lib/exceptions";
 import { Database } from "@/types/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
@@ -12,13 +13,13 @@ export async function checkUsernameAvailability(username: string) {
   const { data } = await supabase.auth.getUser();
 
   if (!data.user) {
-    throw new Error("Unauthorized");
+    throw UNAUTHORIZED_ACTION();
   }
 
   const parsedUsername = usernameFieldSchema.safeParse(username);
 
   if (!parsedUsername.success) {
-    throw new Error("Invalid username");
+    throw BAD_REQUEST_ACTION("Invalid username");
   }
 
   const userQuery = await supabase
@@ -40,13 +41,13 @@ export async function submitProfileDetails(data: z.infer<typeof profileDetailsFo
   const userQuery = await supabase.auth.getUser();
 
   if (!userQuery.data.user) {
-    throw new Error("Unauthorized");
+    throw UNAUTHORIZED_ACTION();
   }
 
   const parsedBody = profileDetailsFormSchema.safeParse(data);
 
   if (!parsedBody.success) {
-    throw new Error("Invalid provided data");
+    throw BAD_REQUEST_ACTION("Invalid Request Body");
   }
 
   const { display_name, username, avatarPath, bio } = parsedBody.data;
