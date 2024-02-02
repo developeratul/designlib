@@ -34,7 +34,7 @@ export default function ProfileDetailsForm() {
       avatarPath: "",
     },
   });
-  const [debouncedUsername] = useDebouncedValue(form.watch("username"), 1000);
+  const [debouncedUsername] = useDebouncedValue(form.watch("username"), 500);
 
   const isQueryEnabled = debouncedUsername.length > 0;
   const { data, isLoading, isError, error, isFetchedAfterMount } = useQuery({
@@ -61,15 +61,16 @@ export default function ProfileDetailsForm() {
     if (!isUsernameAvailable) {
       return form.setError("username", { message: "Username already taken" });
     }
+
     try {
-      await mutateAsync(values);
-      form.reset();
+      const { username } = await mutateAsync(values);
       toast.success("Profile details updated successfully");
       if (nextRoute) {
         router.push(nextRoute);
       } else {
-        router.push("/");
+        router.push(`/${username}`);
       }
+      form.reset();
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);

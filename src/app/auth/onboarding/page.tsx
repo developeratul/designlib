@@ -6,9 +6,10 @@ export default function OnboardingPage() {
     <main className="w-full flex justify-center py-24">
       <Card className="w-full max-w-[400px]">
         <CardHeader>
-          <CardTitle>Profile info</CardTitle>
+          <CardTitle>Welcome to DesignLib community!</CardTitle>
           <CardDescription>
-            Before we proceed, let&apos;s fill up your profile with some info.
+            Let&apos;s get you started with your account. Fill in the form below and we&apos;ll get
+            you set up.
           </CardDescription>
         </CardHeader>
         <CardContent>
