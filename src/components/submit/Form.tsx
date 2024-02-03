@@ -222,8 +222,6 @@ function FetchInitialData(props: {
     }
   };
 
-  console.log(form.watch());
-
   return (
     <form onSubmit={handleFetchData} className="flex flex-col gap-4">
       <div className="space-y-2">
