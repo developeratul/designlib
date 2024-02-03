@@ -1,4 +1,5 @@
 import { getAllCategories } from "@/actions/category.action";
+import SubmitResourceForm from "@/components/submit/Form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function SubmitResourcePage() {
@@ -14,7 +15,7 @@ export default async function SubmitResourcePage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <h1>Content</h1>
+          <SubmitResourceForm categories={categories} />
         </CardContent>
       </Card>
     </main>

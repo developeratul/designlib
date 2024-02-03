@@ -12,7 +12,9 @@ export default function SideBar() {
         <div className="p-4 border-b">
           <Link href="/" className="flex items-center gap-4">
             <Image src={LogoSrc} width={35} height={35} alt="DesignLib logo" />
-            <h4 className={cn("text-lg font-bold tracking-wider", manrope.className)}>DesignLib</h4>
+            <h4 className={cn("text-lg font-bold text-white tracking-wider", manrope.className)}>
+              DesignLib
+            </h4>
           </Link>
         </div>
       </aside>

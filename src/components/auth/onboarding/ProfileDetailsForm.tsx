@@ -86,23 +86,21 @@ export default function ProfileDetailsForm(props: {
       return form.setError("username", { message: "Username already taken" });
     }
 
-    let finalAvatarPath = values.avatarPath;
-
     try {
-      if (!avatarPath) {
-        if (providedUserData?.avatarUrl) {
-          const res = await axios.get(providedUserData.avatarUrl, { responseType: "blob" });
-          const { error, data } = await supabase.storage
-            .from(StorageBucket.Avatars)
-            .upload(`${uuid()}.jpg`, res.data);
+      let finalAvatarPath = values.avatarPath;
 
-          if (error) {
-            return toast.error(error.message);
-          }
+      if (providedUserData?.avatarUrl && !values.avatarPath) {
+        const res = await axios.get(providedUserData.avatarUrl, { responseType: "blob" });
+        const { error, data } = await supabase.storage
+          .from(StorageBucket.Avatars)
+          .upload(`${uuid()}.jpg`, res.data);
 
-          form.setValue("avatarPath", data.path);
-          finalAvatarPath = data.path;
+        if (error) {
+          return toast.error(error.message);
         }
+
+        form.setValue("avatarPath", data.path);
+        finalAvatarPath = data.path;
       }
 
       const { username } = await mutateAsync({

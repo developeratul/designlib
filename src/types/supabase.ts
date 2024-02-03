@@ -41,6 +41,7 @@ export interface Database {
           id: number
           isApproved: boolean
           slug: string
+          thumbnailPath: string | null
           title: string
           user_id: string | null
         }
@@ -51,6 +52,7 @@ export interface Database {
           id?: number
           isApproved?: boolean
           slug?: string
+          thumbnailPath?: string | null
           title?: string
           user_id?: string | null
         }
@@ -61,6 +63,7 @@ export interface Database {
           id?: number
           isApproved?: boolean
           slug?: string
+          thumbnailPath?: string | null
           title?: string
           user_id?: string | null
         }

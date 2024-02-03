@@ -23,10 +23,8 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="grid w-full items-center gap-2">
-            <Button variant="outline">Login with Google</Button>
-            <Button variant="outline" onClick={handleLoginWithGitHub}>
-              Login with GitHub
-            </Button>
+            <Button onClick={handleLoginWithGitHub}>Login with GitHub</Button>
+            <Button>Login with Google</Button>
           </div>
         </CardContent>
       </Card>
