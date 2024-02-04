@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchResourceData } from "@/actions/resource.action";
+import { fetchResourceData, submitResource } from "@/actions/resource.action";
 import { submitResourceForm } from "@/app/submit/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { StorageBucket } from "@/constants/supabase";
+import { generateUniqueFileName } from "@/helpers";
 import { getFileUrl } from "@/helpers/supabase";
 import { Category } from "@/types";
 import { Database } from "@/types/supabase";
@@ -20,8 +21,15 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ArrowRightIcon, InfoIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { Dispatch, FormEventHandler, SetStateAction, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  ChangeEventHandler,
+  Dispatch,
+  FormEventHandler,
+  SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "sonner";
@@ -62,6 +70,12 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
       thumbnailPath: "",
     },
   });
+  const router = useRouter();
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationKey: ["submit-new-resource"],
+    mutationFn: (data: z.infer<typeof submitResourceForm>) => submitResource(data),
+  });
 
   const thumbnailPath = form.watch("thumbnailPath");
   const thumbnailPreviewUrl = useMemo(() => {
@@ -82,23 +96,66 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
     return <FetchInitialData form={form} setFetchedInitialData={setFetchedInitialData} />;
   }
 
-  const handleThumbnailChange = () => {};
+  const handleThumbnailChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const { files } = e.target;
+    if (files && files.length > 0 && files[0]) {
+      const file = files[0];
+      const fileName = generateUniqueFileName(file.name);
 
-  const onSubmit = () => {};
+      const { error, data } = await supabase.storage
+        .from(StorageBucket.ResourceThumbnails)
+        .upload(fileName, file);
+
+      if (error) {
+        return toast.error(error.message);
+      }
+
+      form.setValue("thumbnailPath", data.path);
+      toast.success("Thumbnail uploaded successfully");
+
+      // Delete the old one if any
+      if (thumbnailPath) {
+        await supabase.storage.from(StorageBucket.Avatars).remove([thumbnailPath]);
+      }
+    }
+  };
+
+  const handleGenerateSlug = () => {
+    const title = form.watch("title");
+    const generatedSlug = slugify(title, { lower: true });
+    form.setValue("slug", generatedSlug);
+  };
+
+  const onSubmit = async (values: z.infer<typeof submitResourceForm>) => {
+    try {
+      await mutateAsync(values);
+      router.push("/submit/success");
+      toast.success("Submission successful");
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      }
+    }
+  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="space-y-2">
-          <Label>Thumbnail image</Label>
-          <Image
-            src={thumbnailPreviewUrl}
-            alt="Resource thumbnail image"
-            width={1600}
-            height={900}
-            className="w-full border rounded-md"
-          />
-          <Input type="file" onChange={handleThumbnailChange} />
+          <Label htmlFor="thumbnailFileInput">Thumbnail image</Label>
+          {thumbnailPreviewUrl && (
+            <Image
+              src={thumbnailPreviewUrl}
+              alt="Resource thumbnail image"
+              width={1600}
+              height={900}
+              className="w-full border rounded-md aspect-video"
+            />
+          )}
+          <Input id="thumbnailFileInput" type="file" onChange={handleThumbnailChange} />
+          <p className={"text-sm text-muted-foreground"}>
+            We would appreciate if you could add one :)
+          </p>
         </div>
         <FormField
           control={form.control}
@@ -157,7 +214,12 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
             <FormItem>
               <FormLabel>Slug</FormLabel>
               <FormControl>
-                <Input placeholder="design-lib" {...field} />
+                <div className="flex gap-2 items-center">
+                  <Input placeholder="design-lib" {...field} />
+                  <Button type="button" onClick={handleGenerateSlug} variant="secondary">
+                    Generate
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -176,22 +238,15 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          Submit
+        <Button disabled={isPending} className="w-full" type="submit">
+          {isPending ? "Submitting..." : "Submit"}
+          {isPending && <Loader2 className="w-4 h-4 ml-2 text-inherit animate-spin" />}
         </Button>
         <Alert variant="info">
           <InfoIcon className="w-4 h-4 text-inherit" />
           <AlertDescription>
             You are submitting this resource as{" "}
-            {data ? (
-              <Link href={`/${data.username}`}>
-                <Button className="pl-0 pr-0" variant="link">
-                  @{data.display_name}
-                </Button>
-              </Link>
-            ) : (
-              <b>a Guest</b>
-            )}
+            {data ? <b className="text-primary">@{data.username}</b> : <b>a Guest</b>}
           </AlertDescription>
         </Alert>
       </form>

@@ -40,6 +40,7 @@ export interface Database {
           description: string | null
           id: number
           isApproved: boolean
+          link: string
           slug: string
           thumbnailPath: string | null
           title: string
@@ -51,6 +52,7 @@ export interface Database {
           description?: string | null
           id?: number
           isApproved?: boolean
+          link?: string
           slug?: string
           thumbnailPath?: string | null
           title?: string
@@ -62,6 +64,7 @@ export interface Database {
           description?: string | null
           id?: number
           isApproved?: boolean
+          link?: string
           slug?: string
           thumbnailPath?: string | null
           title?: string

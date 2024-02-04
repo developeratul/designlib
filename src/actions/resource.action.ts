@@ -1,6 +1,12 @@
 "use server";
+import { submitResourceForm } from "@/app/submit/constants";
+import { BAD_REQUEST_ACTION } from "@/lib/exceptions";
+import { Database } from "@/types/supabase";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import axios, { AxiosError } from "axios";
 import cheerio from "cheerio";
+import { cookies } from "next/headers";
+import { z } from "zod";
 
 export async function fetchResourceData(url: string) {
   try {
@@ -29,4 +35,38 @@ export async function fetchResourceData(url: string) {
     }
     throw err;
   }
+}
+
+export async function submitResource(data: z.infer<typeof submitResourceForm>) {
+  const parsedBody = submitResourceForm.safeParse(data);
+
+  if (!parsedBody.success) {
+    throw BAD_REQUEST_ACTION("Invalid data provided");
+  }
+
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const userQuery = await supabase.auth.getUser();
+
+  const { categoryId, link, slug, title, description, thumbnailPath } = parsedBody.data;
+
+  const resourceInsertQuery = await supabase
+    .from("resources")
+    .insert({
+      category_id: Number(categoryId),
+      link,
+      slug,
+      title,
+      description,
+      thumbnailPath,
+      user_id: userQuery.data.user?.id,
+    })
+    .select("id,slug,user_id")
+    .single();
+
+  if (resourceInsertQuery.error) {
+    throw new Error(resourceInsertQuery.error.message);
+  }
+
+  return resourceInsertQuery.data;
 }

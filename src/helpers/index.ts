@@ -15,3 +15,18 @@ export const generateUniqueFileName = (fileName: string): string => {
   const uniqueFileName = `${baseFileName}-${uniqueId}${fileExtension}`;
   return uniqueFileName;
 };
+
+export const cleanUpUrl = (inputUrl: string): string => {
+  try {
+    const url = new URL(inputUrl);
+
+    // Remove trailing slash from the pathname
+    url.pathname = url.pathname.replace(/\/$/, "");
+
+    // Return the cleaned-up URL
+    return url.href;
+  } catch (error) {
+    console.error("Invalid URL:", inputUrl);
+    return inputUrl; // Return the original URL if parsing fails
+  }
+};
