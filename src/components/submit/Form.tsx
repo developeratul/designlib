@@ -1,7 +1,8 @@
 "use client";
 
 import { fetchResourceData } from "@/actions/resource.action";
-import { submitResourceForm } from "@/app/(protected)/submit/constants/constants";
+import { submitResourceForm } from "@/app/submit/constants";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -15,10 +16,11 @@ import { Category } from "@/types";
 import { Database } from "@/types/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { ArrowRightIcon, Loader2 } from "lucide-react";
+import { ArrowRightIcon, InfoIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Dispatch, FormEventHandler, SetStateAction, useMemo, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import slugify from "slugify";
@@ -33,6 +35,22 @@ import { Textarea } from "../ui/textarea";
 
 export default function SubmitResourceForm(props: { categories: Category[] }) {
   const { categories } = props;
+  const supabase = createClientComponentClient<Database>();
+  const { isLoading, data } = useQuery({
+    queryKey: ["get-auth-user"],
+    queryFn: async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) return null;
+      const { user } = data;
+      const dbUserQuery = await supabase
+        .from("users")
+        .select("display_name,username")
+        .eq("id", user.id)
+        .single();
+      if (dbUserQuery.error) return null;
+      return dbUserQuery.data;
+    },
+  });
   const [hasFetchedInitialData, setFetchedInitialData] = useState(false);
   const form = useForm<z.infer<typeof submitResourceForm>>({
     resolver: zodResolver(submitResourceForm),
@@ -53,6 +71,13 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
     return "";
   }, [thumbnailPath]);
 
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-full flex py-12 justify-center items-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
   if (!hasFetchedInitialData) {
     return <FetchInitialData form={form} setFetchedInitialData={setFetchedInitialData} />;
   }
@@ -154,6 +179,21 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
         <Button className="w-full" type="submit">
           Submit
         </Button>
+        <Alert variant="info">
+          <InfoIcon className="w-4 h-4 text-inherit" />
+          <AlertDescription>
+            You are submitting this resource as{" "}
+            {data ? (
+              <Link href={`/${data.username}`}>
+                <Button className="pl-0 pr-0" variant="link">
+                  @{data.display_name}
+                </Button>
+              </Link>
+            ) : (
+              <b>a Guest</b>
+            )}
+          </AlertDescription>
+        </Alert>
       </form>
     </Form>
   );
@@ -207,7 +247,7 @@ function FetchInitialData(props: {
 
       form.setValue("link", url);
       form.setValue("title", title);
-      form.setValue("slug", slugify(title));
+      form.setValue("slug", slugify(title, { lower: true, trim: true }));
       form.setValue("description", description);
       form.setValue("thumbnailPath", ogImagePath);
 
