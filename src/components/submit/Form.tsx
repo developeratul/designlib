@@ -18,7 +18,6 @@ import { Database } from "@/types/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ArrowRightIcon, InfoIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -33,7 +32,6 @@ import {
 import { UseFormReturn, useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "sonner";
-import { v4 as uuid } from "uuid";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -149,7 +147,7 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
               alt="Resource thumbnail image"
               width={1600}
               height={900}
-              className="w-full border rounded-md aspect-video"
+              className="w-full border rounded-md aspect-video object-cover"
             />
           )}
           <Input id="thumbnailFileInput" type="file" onChange={handleThumbnailChange} />
@@ -259,7 +257,6 @@ function FetchInitialData(props: {
   setFetchedInitialData: Dispatch<SetStateAction<boolean>>;
 }) {
   const { form, setFetchedInitialData } = props;
-  const supabase = createClientComponentClient<Database>();
   const [isPending, setPending] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -283,22 +280,7 @@ function FetchInitialData(props: {
 
     try {
       setPending(true);
-      const { title, description, ogImageUrl } = await mutateAsync(url);
-
-      let ogImagePath = "";
-
-      if (ogImageUrl) {
-        const res = await axios.get(ogImageUrl, { responseType: "blob" });
-        const { error, data } = await supabase.storage
-          .from(StorageBucket.ResourceThumbnails)
-          .upload(`${uuid()}.jpg`, res.data);
-
-        if (error) {
-          return toast.error(error.message);
-        }
-
-        ogImagePath = data.path;
-      }
+      const { title, description, ogImagePath } = await mutateAsync(url);
 
       form.setValue("link", url);
       form.setValue("title", title);

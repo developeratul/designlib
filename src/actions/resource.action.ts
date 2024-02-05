@@ -1,15 +1,18 @@
 "use server";
 import { submitResourceForm } from "@/app/submit/constants";
+import { StorageBucket } from "@/constants/supabase";
 import { BAD_REQUEST_ACTION } from "@/lib/exceptions";
 import { Database } from "@/types/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import axios, { AxiosError } from "axios";
 import cheerio from "cheerio";
 import { cookies } from "next/headers";
+import { v4 as uuid } from "uuid";
 import { z } from "zod";
 
 export async function fetchResourceData(url: string) {
   try {
+    const supabase = createServerActionClient<Database>({ cookies });
     const response = await axios.get(url);
 
     // Load HTML content into Cheerio
@@ -24,10 +27,25 @@ export async function fetchResourceData(url: string) {
     // Extract og:image URL
     const ogImageUrl = $('meta[property="og:image"]').attr("content") || "";
 
+    let ogImagePath;
+
+    if (ogImageUrl) {
+      const res = await axios.get(ogImageUrl, { responseType: "arraybuffer" });
+      const { error, data } = await supabase.storage
+        .from(StorageBucket.ResourceThumbnails)
+        .upload(`${uuid()}.jpg`, res.data);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      ogImagePath = data.path;
+    }
+
     return {
       title,
       description,
-      ogImageUrl,
+      ogImagePath,
     };
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -49,6 +67,26 @@ export async function submitResource(data: z.infer<typeof submitResourceForm>) {
   const userQuery = await supabase.auth.getUser();
 
   const { categoryId, link, slug, title, description, thumbnailPath } = parsedBody.data;
+
+  const existingSlugQuery = await supabase
+    .from("resources")
+    .select("id")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (existingSlugQuery.data?.id) {
+    throw new Error("This slug is already taken for another resource");
+  }
+
+  const existingLinkQuery = await supabase
+    .from("resources")
+    .select("id")
+    .eq("link", link)
+    .maybeSingle();
+
+  if (existingLinkQuery.data?.id) {
+    throw new Error("This link is already taken for another resource");
+  }
 
   const resourceInsertQuery = await supabase
     .from("resources")
