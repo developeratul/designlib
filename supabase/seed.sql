@@ -2,7 +2,7 @@ INSERT INTO categories (title, slug, description)
 VALUES (
     'Inspirations',
     'inspirations',
-    'Get inspired from those resources'
+    'Get inspired from these resources'
   ),
   (
     'Illustrations',

@@ -12,8 +12,8 @@ export default async function SubmitResourcePage() {
         <CardHeader>
           <CardTitle>Submit new Resource</CardTitle>
           <CardDescription>
-            Contribute to the community by submitting a new resource that you find useful. We will
-            look into and approve it.
+            Contribute to the community by submitting a new resource that you find useful.
+            We&apos;ll look into and approve it.
             <br />
             Before submitting, we recommend you to{" "}
             <Link href="/auth/login">
@@ -31,3 +31,5 @@ export default async function SubmitResourcePage() {
     </main>
   );
 }
+
+export const dynamic = "force-dynamic";

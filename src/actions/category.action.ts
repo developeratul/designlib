@@ -15,3 +15,20 @@ export async function getAllCategories() {
 
   return data;
 }
+
+export async function getCategoryBySlug(slug: string) {
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*,resources(*)")
+    .eq("resources.isApproved", true)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}

@@ -1,7 +1,9 @@
-import SideBar from "@/components/layout/SideBar";
+import TopBar from "@/components/layout/TopBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { ReactNode } from "react";
 import AppProvider from "../providers/app";
 import "./globals.css";
 
@@ -10,15 +12,20 @@ export const metadata: Metadata = {
   description: "A library of design resources that will save you hours of hunting",
 };
 
-export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
-  const { children } = props;
+export default function RootLayout(props: Readonly<{ children: ReactNode; sidebar: ReactNode }>) {
+  const { children, sidebar } = props;
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, "w-screen h-screen overflow-hidden")}>
+      <body className={cn(inter.className, "w-screen h-screen antialiased overflow-hidden")}>
         <AppProvider>
-          <div className="w-full h-full overflow-hidden flex items-stretch">
-            <SideBar />
-            <div className="w-full min-h-full overflow-x-hidden">{children}</div>
+          <div className="flex flex-col w-full h-full">
+            <TopBar />
+            <div className="w-full container max-w-[1920px] flex-1 h-full overflow-hidden flex items-stretch">
+              {sidebar}
+              <ScrollArea className="w-full h-full">
+                <div className="w-full min-h-full">{children}</div>
+              </ScrollArea>
+            </div>
           </div>
         </AppProvider>
       </body>

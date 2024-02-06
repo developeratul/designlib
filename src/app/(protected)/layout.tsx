@@ -23,3 +23,5 @@ export default async function ProtectedLayout(props: AppProps) {
 
   return children;
 }
+
+export const dynamic = "force-dynamic";
