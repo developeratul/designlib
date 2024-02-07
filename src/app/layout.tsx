@@ -22,8 +22,8 @@ export default function RootLayout(props: Readonly<{ children: ReactNode; sideba
             <TopBar />
             <div className="w-full container max-w-[1920px] flex-1 h-full overflow-hidden flex items-stretch">
               {sidebar}
-              <ScrollArea className="w-full h-full">
-                <div className="w-full min-h-full">{children}</div>
+              <ScrollArea className="w-full min-h-full">
+                <div className="w-full h-full">{children}</div>
               </ScrollArea>
             </div>
           </div>

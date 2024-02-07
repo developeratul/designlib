@@ -9,7 +9,7 @@ import { HomeIcon, Layers2, ViewIcon } from "lucide-react";
 export default async function SideBar() {
   const categories = await getAllCategories();
   return (
-    <ScrollArea className="w-full max-w-[300px] min-h-full border-r overflow-x-hidden">
+    <ScrollArea className="w-full lg:block hidden max-w-[300px] min-h-full border-r overflow-x-hidden">
       <aside>
         <div className="px-4 space-y-4 py-4">
           <div className="grid grid-cols-1 gap-2">

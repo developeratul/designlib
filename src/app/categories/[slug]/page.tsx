@@ -1,13 +1,6 @@
 import { getCategoryBySlug } from "@/actions/category.action";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -45,18 +38,6 @@ export default async function CategoryPage(props: Props) {
         </div>
       </div>
       <Separator />
-      <div>
-        <Select>
-          <SelectTrigger className="max-w-[200px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
       <ResourcesGrid resources={category.resources} />
     </div>
   );

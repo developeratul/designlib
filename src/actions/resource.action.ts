@@ -108,3 +108,43 @@ export async function submitResource(data: z.infer<typeof submitResourceForm>) {
 
   return resourceInsertQuery.data;
 }
+
+export async function getResourceBySlug(slug: string) {
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const { data, error } = await supabase
+    .from("resources")
+    .select("*,category:categories(*)")
+    .eq("isApproved", true)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function getSimilarResources(currentResourceSlug: string) {
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const resource = await getResourceBySlug(currentResourceSlug);
+
+  if (!resource) {
+    throw new Error("Resource not found");
+  }
+
+  const { data, error } = await supabase
+    .from("resources")
+    .select("*,category:categories(*)")
+    .eq("isApproved", true)
+    .eq("category_id", resource.category_id || "")
+    .neq("slug", currentResourceSlug);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
