@@ -1,9 +1,13 @@
 "use client";
 import LogoSrc from "@/assets/logo.svg";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { MenuIcon, StarIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Loader2, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "../ui/button";
@@ -42,14 +46,39 @@ export default function TopBar() {
           </Link>
         </div>
         <div className="flex items-center gap-3">
-          <Button size="icon" variant="outline">
-            <StarIcon className="w-4 h-4 text-inherit" />
-          </Button>
+          <GitHubStarButton />
           <Link className={buttonVariants({ variant: "default" })} href="/submit">
             Submit
           </Link>
         </div>
       </div>
     </nav>
+  );
+}
+
+function GitHubStarButton() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-github-repo-details"],
+    queryFn: () => axios.get("http://api.github.com/repos/developeratul/designlib"),
+  });
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          className={buttonVariants({ variant: "outline" })}
+          href="https://github.com/developeratul/designlib"
+          target="_blank"
+          referrerPolicy="no-referrer"
+        >
+          {isLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin text-inherit mr-2" />
+          ) : (
+            <StarIcon className="w-4 h-4 text-inherit mr-2" />
+          )}
+          {isLoading ? "Fetching..." : `${data?.data.stargazers_count || 0} stars`}
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent>Star on GitHub</TooltipContent>
+    </Tooltip>
   );
 }
