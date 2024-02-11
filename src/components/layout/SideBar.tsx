@@ -1,21 +1,27 @@
 "use client";
 import { getAllCategories } from "@/actions/category.action";
 import NavLink from "@/components/ui/nav-link";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { HomeIcon, Layers2, ViewIcon } from "lucide-react";
+import Link from "next/link";
+import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
 
 export default function SideBar() {
   return (
-    <ScrollArea className="w-full lg:block hidden max-w-[300px] min-h-full border-r overflow-x-hidden">
-      <aside className="p-4">
-        <SideBarContent />
+    <div className="w-full lg:block hidden max-w-[300px] border-r overflow-hidden">
+      <aside className="grid grid-rows-2 w-full h-full overflow-hidden">
+        <ScrollArea className="row-span-full">
+          <div className="p-4 w-full h-full">
+            <SideBarContent />
+          </div>
+        </ScrollArea>
+        <SideBarFooter />
       </aside>
-    </ScrollArea>
+    </div>
   );
 }
 
@@ -35,6 +41,23 @@ export function SideBarContent() {
         <h4 className={cn(manrope.className, "font-semibold text-sm text-white")}>Categories</h4>
         <CategoryList />
       </div>
+    </div>
+  );
+}
+
+export function SideBarFooter() {
+  return (
+    <div className="p-4 border-t bg-background">
+      <p className="text-sm">
+        A community driven project created and maintained by{" "}
+        <Link
+          target="_blank"
+          href="https://www.developeratul.com"
+          className="text-white hover:underline underline-offset-2"
+        >
+          @developeratul
+        </Link>
+      </p>
     </div>
   );
 }

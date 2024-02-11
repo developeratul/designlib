@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   description: "A library of design resources that will save you hours of hunting",
 };
 
-export default function RootLayout(props: Readonly<{ children: ReactNode; sidebar: ReactNode }>) {
-  const { children, sidebar } = props;
+export default function RootLayout(props: Readonly<{ children: ReactNode }>) {
+  const { children } = props;
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "w-screen h-screen antialiased overflow-hidden")}>

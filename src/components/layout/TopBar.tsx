@@ -11,7 +11,7 @@ import { Loader2, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "../ui/button";
-import { SideBarContent } from "./SideBar";
+import { SideBarContent, SideBarFooter } from "./SideBar";
 
 export default function TopBar() {
   return (
@@ -24,12 +24,15 @@ export default function TopBar() {
                 <MenuIcon />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col items-start gap-4">
-              <SheetHeader>
+            <SheetContent side="left" className="flex gap-0 flex-col items-start p-0">
+              <SheetHeader className="p-4">
                 <SheetTitle>DesignLib</SheetTitle>
               </SheetHeader>
-              <div className="h-full flex-1 overflow-x-hidden w-full">
-                <SideBarContent />
+              <div className="h-full flex-1 grid grid-rows-2 overflow-x-hidden w-full">
+                <div className="row-span-full px-4 overflow-x-hidden">
+                  <SideBarContent />
+                </div>
+                <SideBarFooter />
               </div>
             </SheetContent>
           </Sheet>
