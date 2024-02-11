@@ -31,7 +31,10 @@ export default async function CategoryPage(props: Props) {
           <p>{category.description}</p>
         </div>
         <div className="flex items-center gap-4">
-          <Badge className="flex items-center gap-2 py-1 px-2 text-sm">
+          <Badge
+            variant={category.resources.length > 0 ? "default" : "secondary"}
+            className="flex items-center gap-2 py-1 px-2 text-sm"
+          >
             <DiamondIcon className="w-4 h-4 text-inherit" />
             {category.resources.length} resource(s)
           </Badge>

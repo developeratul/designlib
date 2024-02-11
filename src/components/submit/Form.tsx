@@ -289,13 +289,13 @@ function FetchInitialData(props: {
       form.setValue("thumbnailPath", ogImagePath);
 
       toast.success("Successfully fetched data from the URL");
-      setFetchedInitialData(true);
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
       }
     } finally {
       setPending(false);
+      setFetchedInitialData(true);
     }
   };
 
