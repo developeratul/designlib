@@ -22,7 +22,7 @@ export default async function CategoryPage(props: Props) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 container">
       <div className="space-y-4">
         <div className="space-y-2">
           <h1 className={cn("text-3xl text-white font-semibold", manrope.className)}>

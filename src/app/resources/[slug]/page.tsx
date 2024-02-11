@@ -28,7 +28,7 @@ export default async function ResourceDetailsPage(props: Props) {
   const similarResource = await getSimilarResources(resource.slug);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 container">
       <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row items-start gap-8">
         <Avatar className="rounded-sm aspect-video flex-shrink-0 w-full max-w-full lg:max-w-md md:max-w-sm h-auto border">
           <AvatarImage
