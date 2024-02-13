@@ -5,11 +5,11 @@ import { StorageBucket } from "@/constants/supabase";
 import { getFileUrl } from "@/helpers/supabase";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Resource } from "@/types";
+import { ResourceWithUser } from "@/types";
 import { ImageIcon, LinkIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function ResourceCard(props: { resource: Resource }) {
+export default function ResourceCard(props: { resource: ResourceWithUser }) {
   const { resource } = props;
   return (
     <Card className="flex flex-col gap-0">

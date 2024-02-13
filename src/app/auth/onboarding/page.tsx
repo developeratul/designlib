@@ -20,7 +20,7 @@ export default async function OnboardingPage() {
     .single();
 
   if (dbUserQuery.data?.username) {
-    return redirect(`/${dbUserQuery.data.username}`);
+    return redirect(`/u/${dbUserQuery.data.username}`);
   }
 
   return (

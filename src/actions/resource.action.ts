@@ -114,7 +114,7 @@ export async function getResourceBySlug(slug: string) {
 
   const { data, error } = await supabase
     .from("resources")
-    .select("*,category:categories(*)")
+    .select("*,category:categories(*),user:users(*)")
     .eq("isApproved", true)
     .eq("slug", slug)
     .maybeSingle();

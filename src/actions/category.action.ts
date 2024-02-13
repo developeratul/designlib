@@ -21,7 +21,7 @@ export async function getCategoryBySlug(slug: string) {
 
   const { data, error } = await supabase
     .from("categories")
-    .select("*,resources(*)")
+    .select("*,resources(*,user:users(*))")
     .eq("resources.isApproved", true)
     .eq("slug", slug)
     .maybeSingle();

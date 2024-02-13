@@ -30,7 +30,7 @@ export default function SubmissionSuccessfulPage() {
 
   if (isLoading) {
     return (
-      <div className="w-full min-h-full flex py-12 justify-center items-center">
+      <div className="w-full min-h-full flex py-48 justify-center items-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );

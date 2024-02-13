@@ -109,7 +109,7 @@ export default function ProfileDetailsForm(props: {
       });
       toast.success("Profile details updated successfully");
       if (nextRoute) {
-        router.push(nextRoute);
+        router.push(`/${nextRoute}`);
       } else {
         router.push(`/${username}`);
       }

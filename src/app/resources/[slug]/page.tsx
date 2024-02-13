@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { StorageBucket } from "@/constants/supabase";
+import { getTwoWordRepresentation } from "@/helpers";
 import { getFileUrl } from "@/helpers/supabase";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -62,6 +63,29 @@ export default async function ResourceDetailsPage(props: Props) {
             </h1>
             <p>{resource.description}</p>
           </div>
+          {resource.user && (
+            <div className="text-sm font-medium flex items-center gap-2">
+              Shared by
+              <Link
+                className="inline-flex items-center gap-2"
+                href={`/u/${resource.user.username}`}
+              >
+                <Avatar className="w-5 h-5">
+                  <AvatarImage
+                    src={
+                      resource.user.avatarPath
+                        ? getFileUrl(StorageBucket.Avatars, resource.user.avatarPath)
+                        : ""
+                    }
+                  />
+                  <AvatarFallback className="text-[6px]">
+                    {getTwoWordRepresentation(resource.user.display_name)}
+                  </AvatarFallback>
+                </Avatar>
+                <p className="font-medium text-white">{resource.user.display_name}</p>
+              </Link>
+            </div>
+          )}
           <Link
             target="_blank"
             referrerPolicy="no-referrer"

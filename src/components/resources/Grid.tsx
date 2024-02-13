@@ -1,12 +1,15 @@
 "use client";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Resource } from "@/types";
+import { ResourceWithUser } from "@/types";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import ResourceCard from "./Card";
 
-export default function ResourcesGrid(props: { resources: Resource[]; emptyMessage?: string }) {
+export default function ResourcesGrid(props: {
+  resources: ResourceWithUser[];
+  emptyMessage?: string;
+}) {
   const { resources, emptyMessage } = props;
   if (!resources.length) {
     return (
