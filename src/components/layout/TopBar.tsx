@@ -1,19 +1,34 @@
 "use client";
 import LogoSrc from "@/assets/logo.svg";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
+import { getTwoWordRepresentation, openUrlInNewTab } from "@/helpers";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { Database } from "@/types/supabase";
+import { User, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "../ui/button";
 import { SideBarContent, SideBarFooter } from "./SideBar";
 
-export default function TopBar() {
+export default function TopBar(props: { user: User | null }) {
+  const { user } = props;
+  const router = useRouter();
+  const supabase = createClientComponentClient<Database>();
   return (
     <nav className="py-4 px-4 z-50 sticky w-full top-0 left-0 border-b bg-background/50 backdrop-blur-sm">
       <div className="flex items-center w-full justify-between">
@@ -48,12 +63,50 @@ export default function TopBar() {
             </h4>
           </Link>
         </div>
-        <div className="flex items-center gap-3">
-          <GitHubStarButton />
-          <Link className={buttonVariants({ variant: "default" })} href="/submit">
-            Submit
-          </Link>
-        </div>
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarImage src={user.user_metadata.avatar_url} />
+                <AvatarFallback>
+                  {getTwoWordRepresentation(user.user_metadata.full_name)}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>{user.user_metadata.full_name}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push("/submit")}>
+                Update account details
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/submit")}>
+                Submit new Resource
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => openUrlInNewTab("https://github.com/developeratul/designlib")}
+              >
+                Star on GitHub
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  router.push("/");
+                  router.refresh();
+                }}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className="flex items-center gap-3">
+            <GitHubStarButton />
+            <Link className={buttonVariants({ variant: "default" })} href="/submit">
+              Submit
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );
