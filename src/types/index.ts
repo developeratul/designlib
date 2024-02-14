@@ -14,7 +14,8 @@ export type Enums<T extends keyof Database["public"]["Enums"]> = Database["publi
 export type User = Tables<"users">;
 export type Category = Tables<"categories">;
 export type Resource = Tables<"resources">;
+export type Bookmark = Tables<"bookmarks">;
 
-export interface ResourceWithUser extends Resource {
+export type ResourceWithMeta = Resource & {
   user?: User | null;
-}
+};

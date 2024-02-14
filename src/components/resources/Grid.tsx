@@ -1,16 +1,17 @@
 "use client";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { ResourceWithUser } from "@/types";
+import { Bookmark, ResourceWithMeta } from "@/types";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import ResourceCard from "./Card";
 
 export default function ResourcesGrid(props: {
-  resources: ResourceWithUser[];
+  resources: ResourceWithMeta[];
+  bookmarks: Bookmark[];
   emptyMessage?: string;
 }) {
-  const { resources, emptyMessage } = props;
+  const { resources, emptyMessage, bookmarks } = props;
   if (!resources.length) {
     return (
       <div className="w-full flex justify-center items-center py-24">
@@ -36,7 +37,7 @@ export default function ResourcesGrid(props: {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
       {resources.map((resource) => (
-        <ResourceCard resource={resource} key={resource.id} />
+        <ResourceCard bookmarks={bookmarks} resource={resource}  key={resource.id} />
       ))}
     </div>
   );

@@ -1,4 +1,5 @@
 import { getCategoryBySlug } from "@/actions/category.action";
+import { getAllBookmarksOfAuthUser } from "@/actions/resource.action";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -16,6 +17,7 @@ interface Props {
 export default async function CategoryPage(props: Props) {
   const { params } = props;
   const category = await getCategoryBySlug(params.slug);
+  const bookmarks = await getAllBookmarksOfAuthUser();
 
   if (!category) {
     return notFound();
@@ -41,7 +43,7 @@ export default async function CategoryPage(props: Props) {
         </div>
       </div>
       <Separator />
-      <ResourcesGrid resources={category.resources} />
+      <ResourcesGrid bookmarks={bookmarks} resources={category.resources} />
     </div>
   );
 }

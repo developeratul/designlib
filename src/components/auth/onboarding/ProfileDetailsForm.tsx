@@ -111,7 +111,7 @@ export default function ProfileDetailsForm(props: {
       if (nextRoute) {
         router.push(`/${nextRoute}`);
       } else {
-        router.push(`/${username}`);
+        router.push(`/u/${username}`);
       }
       form.reset();
     } catch (err) {

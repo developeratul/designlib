@@ -9,6 +9,39 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      bookmarks: {
+        Row: {
+          created_at: string
+          resourceId: number
+          userId: string
+        }
+        Insert: {
+          created_at?: string
+          resourceId: number
+          userId: string
+        }
+        Update: {
+          created_at?: string
+          resourceId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_resourceId_fkey"
+            columns: ["resourceId"]
+            isOneToOne: true
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookmarks_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       categories: {
         Row: {
           created_at: string

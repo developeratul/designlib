@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { HomeIcon, Layers2, ViewIcon } from "lucide-react";
+import { HomeIcon, Layers2 } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
@@ -32,9 +32,9 @@ export function SideBarContent() {
         <NavLink href="/" icon={<HomeIcon className="w-5 h-5 text-inherit" />}>
           Home
         </NavLink>
-        <NavLink href="/listings" icon={<ViewIcon className="w-5 h-5 text-inherit" />}>
+        {/* <NavLink href="/listings" icon={<ViewIcon className="w-5 h-5 text-inherit" />}>
           Explore Listings
-        </NavLink>
+        </NavLink> */}
       </div>
       <Separator />
       <div className="space-y-4">

@@ -1,4 +1,9 @@
-import { getResourceBySlug, getSimilarResources } from "@/actions/resource.action";
+import {
+  getAllBookmarksOfAuthUser,
+  getResourceBySlug,
+  getSimilarResources,
+} from "@/actions/resource.action";
+import { BookmarkResource } from "@/components/resources/Card";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,6 +26,7 @@ interface Props {
 export default async function ResourceDetailsPage(props: Props) {
   const { params } = props;
   const resource = await getResourceBySlug(params.slug);
+  const bookmarks = await getAllBookmarksOfAuthUser();
 
   if (!resource) {
     return notFound();
@@ -86,14 +92,17 @@ export default async function ResourceDetailsPage(props: Props) {
               </Link>
             </div>
           )}
-          <Link
-            target="_blank"
-            referrerPolicy="no-referrer"
-            href={resource.link}
-            className={buttonVariants({ variant: "secondary" })}
-          >
-            <LinkIcon className="w-4 h-4 text-inherit mr-2" /> Visit
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              target="_blank"
+              referrerPolicy="no-referrer"
+              href={resource.link}
+              className={buttonVariants({ variant: "secondary" })}
+            >
+              <LinkIcon className="w-4 h-4 text-inherit mr-2" /> Visit
+            </Link>
+            <BookmarkResource resource={resource} bookmarks={bookmarks} />
+          </div>
         </div>
       </div>
       <Separator />
@@ -101,7 +110,11 @@ export default async function ResourceDetailsPage(props: Props) {
         <h2 className={cn("text-xl text-white font-semibold", manrope.className)}>
           Similar resources
         </h2>
-        <ResourcesGrid emptyMessage="No similar resources found" resources={similarResource} />
+        <ResourcesGrid
+          bookmarks={bookmarks}
+          emptyMessage="No similar resources found"
+          resources={similarResource}
+        />
       </div>
     </div>
   );

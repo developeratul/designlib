@@ -20,6 +20,7 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
   const { children } = props;
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.auth.getUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "w-screen h-screen antialiased overflow-hidden")}>
@@ -38,3 +39,5 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
     </html>
   );
 }
+
+export const dynamic = "force-dynamic";

@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchResourceData, submitResource } from "@/actions/resource.action";
-import { submitResourceForm } from "@/app/submit/constants";
+import { submitResourceForm } from "@/app/(onboarding-required)/submit/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
