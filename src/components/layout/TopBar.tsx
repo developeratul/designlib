@@ -76,9 +76,7 @@ export default function TopBar(props: { user: User | null }) {
             <DropdownMenuContent>
               <DropdownMenuLabel>{user.user_metadata.full_name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/submit")}>
-                Update account details
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/u")}>View profile</DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push("/submit")}>
                 Submit new Resource
               </DropdownMenuItem>

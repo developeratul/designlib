@@ -9,6 +9,7 @@ export const env = createEnv({
    */
   server: {
     SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET: z.string(),
+    SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET: z.string(),
   },
   /*
    * Environment variables available on the client (and server).
@@ -19,6 +20,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
     NEXT_PUBLIC_SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID: z.string(),
     NEXT_PUBLIC_BASE_URL: z.string().url(),
   },
   /*
@@ -34,5 +36,8 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID,
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET: process.env.SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET,
+    NEXT_PUBLIC_SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID:
+      process.env.NEXT_PUBLIC_SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID,
+    SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET: process.env.SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET,
   },
 });

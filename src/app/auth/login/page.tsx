@@ -14,6 +14,14 @@ export default function LoginPage() {
       },
     });
   };
+  const handleLoginWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
   return (
     <main className="w-full flex justify-center py-24">
       <Card className="w-full max-w-[400px]">
@@ -26,7 +34,9 @@ export default function LoginPage() {
             <Button variant="secondary" onClick={handleLoginWithGitHub}>
               Login with GitHub
             </Button>
-            <Button variant="secondary">Login with Google</Button>
+            <Button onClick={handleLoginWithGoogle} variant="secondary">
+              Login with Google
+            </Button>
           </div>
         </CardContent>
       </Card>
