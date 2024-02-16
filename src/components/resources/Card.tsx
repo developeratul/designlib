@@ -83,11 +83,22 @@ export function BookmarkResource(props: Props) {
   const handleCreateBookMark = async () => {
     try {
       setPending(true);
-      const { data } = await supabase.auth.getUser();
+      const authQuery = await supabase.auth.getUser();
 
-      if (!data.user) {
+      if (!authQuery.data.user) {
         router.push("/auth/login");
         return toast.error("Please login to bookmark this resource");
+      }
+
+      const userQuery = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", authQuery.data.user.id)
+        .maybeSingle();
+
+      if (!userQuery.data) {
+        router.push("/auth/onboarding");
+        return toast.error("Please finish onboarding to continue");
       }
 
       const isBookmarked = await bookmarkResource(resource.id);
