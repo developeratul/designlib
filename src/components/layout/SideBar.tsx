@@ -6,7 +6,7 @@ import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { User } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
-import { HomeIcon, Layers2, LogInIcon, SendIcon } from "lucide-react";
+import { BookmarkIcon, HomeIcon, Layers2, LogInIcon, SendIcon } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
@@ -38,6 +38,11 @@ export function SideBarContent(props: { user: User | null }) {
         {!user && (
           <NavLink href="/auth/login" icon={<LogInIcon className="w-5 h-5 text-inherit" />}>
             Login
+          </NavLink>
+        )}
+        {user && (
+          <NavLink href="/bookmarks" icon={<BookmarkIcon className="w-5 h-5 text-inherit" />}>
+            Bookmarks
           </NavLink>
         )}
         {user && (

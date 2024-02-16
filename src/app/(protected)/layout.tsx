@@ -4,21 +4,20 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function OnboardingRequiredLayout(props: AppProps) {
+export default async function ProtectedLayout(props: AppProps) {
   const { children } = props;
   const supabase = createServerComponentClient<Database>({ cookies });
-  const sessionQuery = await supabase.auth.getSession();
-  const userQuery = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", sessionQuery.data.session?.user.id || "")
-    .maybeSingle();
+  const { data } = await supabase.auth.getUser();
 
-  if (sessionQuery.data.session && !userQuery.data) {
+  if (!data.user) {
+    return redirect("/auth/login");
+  }
+
+  const userQuery = await supabase.from("users").select("*").eq("id", data.user.id).maybeSingle();
+
+  if (!userQuery.data) {
     return redirect("/auth/onboarding");
   }
 
   return children;
 }
-
-export const dynamic = "force-dynamic";

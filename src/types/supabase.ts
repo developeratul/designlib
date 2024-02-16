@@ -29,15 +29,8 @@ export interface Database {
           {
             foreignKeyName: "bookmarks_resourceId_fkey"
             columns: ["resourceId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "resources"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookmarks_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: true
-            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]
