@@ -8,16 +8,13 @@ export default async function ProtectedLayout(props: AppProps) {
   const { children } = props;
   const supabase = createServerComponentClient<Database>({ cookies });
   const sessionQuery = await supabase.auth.getSession();
+  const userQuery = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", sessionQuery.data.session?.user.id || "")
+    .maybeSingle();
 
-  if (!sessionQuery.data.session) {
-    return redirect("/auth/login");
-  }
-
-  const { session } = sessionQuery.data;
-
-  const userQuery = await supabase.from("users").select("*").eq("id", session.user.id).single();
-
-  if (!userQuery.data) {
+  if (sessionQuery.data.session && !userQuery.data) {
     return redirect("/auth/onboarding");
   }
 

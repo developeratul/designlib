@@ -4,19 +4,21 @@ import NavLink from "@/components/ui/nav-link";
 import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { User } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
-import { HomeIcon, Layers2 } from "lucide-react";
+import { HomeIcon, Layers2, SendIcon } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
 
-export default function SideBar() {
+export default function SideBar(props: { user: User | null }) {
+  const { user } = props;
   return (
     <div className="w-full lg:block hidden max-w-[300px] border-r overflow-hidden">
       <aside className="grid grid-rows-2 w-full h-full overflow-hidden">
         <ScrollArea className="row-span-full">
           <div className="p-4 w-full h-full">
-            <SideBarContent />
+            <SideBarContent user={user} />
           </div>
         </ScrollArea>
         <SideBarFooter />
@@ -25,13 +27,19 @@ export default function SideBar() {
   );
 }
 
-export function SideBarContent() {
+export function SideBarContent(props: { user: User | null }) {
+  const { user } = props;
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-2">
         <NavLink href="/" icon={<HomeIcon className="w-5 h-5 text-inherit" />}>
           Home
         </NavLink>
+        {user && (
+          <NavLink href="/submit" icon={<SendIcon className="w-5 h-5 text-inherit" />}>
+            Submit new Resource
+          </NavLink>
+        )}
         {/* <NavLink href="/listings" icon={<ViewIcon className="w-5 h-5 text-inherit" />}>
           Explore Listings
         </NavLink> */}

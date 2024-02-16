@@ -28,7 +28,7 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
           <div className="flex flex-col w-full h-full">
             <TopBar user={data.user} />
             <div className="w-full flex-1 h-full overflow-hidden flex gap-0 items-stretch">
-              <SideBar />
+              <SideBar user={data.user} />
               <ScrollArea className="w-full min-h-full">
                 <div className="w-full h-full">{children}</div>
               </ScrollArea>

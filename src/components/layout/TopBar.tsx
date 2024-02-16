@@ -45,7 +45,7 @@ export default function TopBar(props: { user: User | null }) {
               </SheetHeader>
               <div className="h-full flex-1 grid grid-rows-2 overflow-x-hidden w-full">
                 <div className="row-span-full px-4 overflow-x-hidden">
-                  <SideBarContent />
+                  <SideBarContent user={user} />
                 </div>
                 <SideBarFooter />
               </div>

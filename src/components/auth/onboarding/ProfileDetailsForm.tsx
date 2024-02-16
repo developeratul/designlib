@@ -112,6 +112,7 @@ export default function ProfileDetailsForm(props: {
         router.push(`/${nextRoute}`);
       } else {
         router.push(`/u/${username}`);
+        router.refresh();
       }
       form.reset();
     } catch (err) {
