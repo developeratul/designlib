@@ -70,7 +70,7 @@ export default async function ResourceDetailsPage(props: Props) {
             <p>{resource.description}</p>
           </div>
           {resource.user && (
-            <div className="text-sm font-medium flex items-center gap-2">
+            <div className="text-sm text-muted-foreground font-medium flex items-center gap-2">
               Shared by
               <Link
                 className="inline-flex items-center gap-2"

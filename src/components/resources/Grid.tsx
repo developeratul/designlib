@@ -10,13 +10,14 @@ export default function ResourcesGrid(props: {
   resources: ResourceWithMeta[];
   bookmarks: Bookmark[];
   emptyMessage?: string;
+  gridClassName?: string;
 }) {
-  const { resources, emptyMessage, bookmarks } = props;
+  const { resources, emptyMessage, bookmarks, gridClassName } = props;
   if (!resources.length) {
     return (
       <div className="w-full flex justify-center items-center py-24">
-        <div className="w-full space-y-8 max-w-sm">
-          <div className="space-y-2">
+        <div className="w-full max-w-xs text-center space-y-8">
+          <div className="space-y-2 flex flex-col justify-center items-center">
             <h2 className={cn("text-white font-semibold text-xl", manrope.className)}>
               No resources found
             </h2>
@@ -35,9 +36,14 @@ export default function ResourcesGrid(props: {
     );
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+    <div
+      className={cn(
+        "grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4",
+        gridClassName
+      )}
+    >
       {resources.map((resource) => (
-        <ResourceCard bookmarks={bookmarks} resource={resource}  key={resource.id} />
+        <ResourceCard bookmarks={bookmarks} resource={resource} key={resource.id} />
       ))}
     </div>
   );
