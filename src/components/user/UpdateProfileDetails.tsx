@@ -13,6 +13,7 @@ import {
 import { StorageBucket } from "@/constants/supabase";
 import { generateUniqueFileName } from "@/helpers";
 import { getFileUrl } from "@/helpers/supabase";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -92,6 +93,9 @@ export default function UpdateProfileDetailsModal(props: {
   });
 
   const onSubmit = async (values: z.infer<typeof updateProfileDetailsFormSchema>) => {
+    if (!isUsernameAvailable) {
+      return form.setError("username", { message: "Username already taken" });
+    }
     try {
       const username = await mutateAsync(values);
       toggle();
@@ -139,7 +143,7 @@ export default function UpdateProfileDetailsModal(props: {
   return (
     <Dialog open={isOpen} onOpenChange={toggle} modal>
       <DialogTrigger onClick={toggle} asChild>
-        <Button size="sm" variant="secondary">
+        <Button size="sm" className={cn("text-xs h-8 rounded-full px-4")} variant="secondary">
           Edit profile
         </Button>
       </DialogTrigger>

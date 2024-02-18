@@ -1,5 +1,5 @@
 "use server";
-import { profileDetailsFormSchema } from "@/app/auth/onboarding/constants";
+import { onboardingFormSchema } from "@/app/auth/onboarding/constants";
 import { usernameFieldSchema } from "@/constants";
 import { BAD_REQUEST_ACTION, UNAUTHORIZED_ACTION } from "@/lib/exceptions";
 import { Database } from "@/types/supabase";
@@ -41,7 +41,7 @@ export async function checkUsernameAvailability(username: string) {
   return { available: true };
 }
 
-export async function submitProfileDetails(data: z.infer<typeof profileDetailsFormSchema>) {
+export async function submitProfileDetails(data: z.infer<typeof onboardingFormSchema>) {
   const supabase = createServerActionClient<Database>({ cookies });
 
   const authQuery = await supabase.auth.getUser();
@@ -50,7 +50,7 @@ export async function submitProfileDetails(data: z.infer<typeof profileDetailsFo
     throw UNAUTHORIZED_ACTION();
   }
 
-  const parsedBody = profileDetailsFormSchema.safeParse(data);
+  const parsedBody = onboardingFormSchema.safeParse(data);
 
   if (!parsedBody.success) {
     throw BAD_REQUEST_ACTION("Invalid Request Body");

@@ -4,7 +4,7 @@ import NavLink from "@/components/ui/nav-link";
 import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { User } from "@supabase/auth-helpers-nextjs";
+import { User } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { BookmarkIcon, HomeIcon, Layers2, LogInIcon, SendIcon } from "lucide-react";
 import Link from "next/link";

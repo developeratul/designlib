@@ -1,13 +1,16 @@
 "use server";
 import { updateProfileDetailsFormSchema } from "@/app/(onboarding-required)/u/[username]/constants";
-import { profileDetailsFormSchema } from "@/app/auth/onboarding/constants";
+import { onboardingFormSchema } from "@/app/auth/onboarding/constants";
+import { StorageBucket } from "@/constants/supabase";
 import { BAD_REQUEST_ACTION, NOT_FOUND_ACTION, UNAUTHORIZED_ACTION } from "@/lib/exceptions";
 import { Database } from "@/types/supabase";
 import {
   createServerActionClient,
   createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
+import axios from "axios";
 import { cookies } from "next/headers";
+import { v4 as uuid } from "uuid";
 import { z } from "zod";
 
 export async function getAuthUser() {
@@ -57,7 +60,7 @@ export async function updateProfileDetails(data: z.infer<typeof updateProfileDet
     throw UNAUTHORIZED_ACTION();
   }
 
-  const parsedBody = profileDetailsFormSchema.safeParse(data);
+  const parsedBody = onboardingFormSchema.safeParse(data);
 
   if (!parsedBody.success) {
     throw BAD_REQUEST_ACTION("Invalid Request Body");
@@ -91,4 +94,25 @@ export async function updateProfileDetails(data: z.infer<typeof updateProfileDet
   }
 
   return updateQuery.data.username;
+}
+
+export async function uploadUserAvatarFromUrl(url: string) {
+  const supabase = createServerComponentClient<Database>({ cookies });
+
+  const authQuery = await supabase.auth.getUser();
+
+  if (!authQuery.data.user) {
+    throw UNAUTHORIZED_ACTION();
+  }
+
+  const res = await axios.get(url, { responseType: "blob" });
+  const { error, data } = await supabase.storage
+    .from(StorageBucket.Avatars)
+    .upload(`${uuid()}.jpg`, res.data);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.path;
 }

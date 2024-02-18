@@ -1,3 +1,4 @@
+import { getAuthUser } from "@/actions/user.actions";
 import SideBar from "@/components/layout/SideBar";
 import TopBar from "@/components/layout/TopBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,16 +20,16 @@ export const metadata: Metadata = {
 export default async function RootLayout(props: Readonly<{ children: ReactNode }>) {
   const { children } = props;
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.auth.getUser();
+  const user = await getAuthUser();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "w-screen h-screen antialiased overflow-hidden")}>
         <AppProvider>
           <div className="flex flex-col w-full h-full">
-            <TopBar user={data.user} />
+            <TopBar user={user} />
             <div className="w-full flex-1 h-full overflow-hidden flex gap-0 items-stretch">
-              <SideBar user={data.user} />
+              <SideBar user={user} />
               <ScrollArea className="w-full min-h-full">
                 <div className="w-full h-full">{children}</div>
               </ScrollArea>

@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { StorageBucket } from "@/constants/supabase";
 import { getTwoWordRepresentation, openUrlInNewTab } from "@/helpers";
+import { getFileUrl } from "@/helpers/supabase";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { User } from "@/types";
 import { Database } from "@/types/supabase";
-import { User, createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2, MenuIcon, StarIcon } from "lucide-react";
@@ -67,14 +70,14 @@ export default function TopBar(props: { user: User | null }) {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src={user.user_metadata.avatar_url} />
-                <AvatarFallback>
-                  {getTwoWordRepresentation(user.user_metadata.full_name)}
-                </AvatarFallback>
+                <AvatarImage
+                  src={user.avatarPath ? getFileUrl(StorageBucket.Avatars, user.avatarPath) : ""}
+                />
+                <AvatarFallback>{getTwoWordRepresentation(user.display_name)}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>{user.user_metadata.full_name}</DropdownMenuLabel>
+              <DropdownMenuLabel>@{user.username}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push("/u")}>View profile</DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push("/submit")}>

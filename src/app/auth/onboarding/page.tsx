@@ -1,4 +1,4 @@
-import ProfileDetailsForm from "@/components/auth/onboarding/ProfileDetailsForm";
+import OnboardingForm from "@/components/auth/onboarding/Form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -34,7 +34,7 @@ export default async function OnboardingPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ProfileDetailsForm
+          <OnboardingForm
             providedUserData={{
               display_name: data.user.user_metadata.full_name,
               avatarUrl: data.user.user_metadata.avatar_url,

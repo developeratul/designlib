@@ -1,6 +1,7 @@
 "use client";
 import { checkUsernameAvailability, submitProfileDetails } from "@/actions/auth.actions";
-import { profileDetailsFormSchema } from "@/app/auth/onboarding/constants";
+import { uploadUserAvatarFromUrl } from "@/actions/user.actions";
+import { onboardingFormSchema } from "@/app/auth/onboarding/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,23 +25,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedValue } from "@mantine/hooks";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { AlertCircleIcon, CheckIcon, ImageIcon, Loader, Loader2 } from "lucide-react";
+import { AlertCircleIcon, CheckIcon, ImageIcon, Loader, Loader2, LogOutIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEventHandler, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { v4 as uuid } from "uuid";
 import { z } from "zod";
 
-export default function ProfileDetailsForm(props: {
+export default function OnboardingForm(props: {
   providedUserData?: { display_name?: string; avatarUrl?: string };
 }) {
   const { providedUserData } = props;
   const supabase = createClientComponentClient<Database>();
 
-  const form = useForm<z.infer<typeof profileDetailsFormSchema>>({
-    resolver: zodResolver(profileDetailsFormSchema),
+  const form = useForm<z.infer<typeof onboardingFormSchema>>({
+    resolver: zodResolver(onboardingFormSchema),
     defaultValues: {
       username: "",
       display_name: providedUserData?.display_name || "",
@@ -72,7 +71,7 @@ export default function ProfileDetailsForm(props: {
 
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ["submit-profile-details"],
-    mutationFn: (data: z.infer<typeof profileDetailsFormSchema>) => {
+    mutationFn: (data: z.infer<typeof onboardingFormSchema>) => {
       return submitProfileDetails(data);
     },
   });
@@ -81,7 +80,7 @@ export default function ProfileDetailsForm(props: {
   const nextRoute = searchParams.get("next");
   const router = useRouter();
 
-  const onSubmit = async (values: z.infer<typeof profileDetailsFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof onboardingFormSchema>) => {
     if (!isUsernameAvailable) {
       return form.setError("username", { message: "Username already taken" });
     }
@@ -90,17 +89,9 @@ export default function ProfileDetailsForm(props: {
       let finalAvatarPath = values.avatarPath;
 
       if (providedUserData?.avatarUrl && !values.avatarPath) {
-        const res = await axios.get(providedUserData.avatarUrl, { responseType: "blob" });
-        const { error, data } = await supabase.storage
-          .from(StorageBucket.Avatars)
-          .upload(`${uuid()}.jpg`, res.data);
-
-        if (error) {
-          return toast.error(error.message);
-        }
-
-        form.setValue("avatarPath", data.path);
-        finalAvatarPath = data.path;
+        const path = await uploadUserAvatarFromUrl(providedUserData.avatarUrl);
+        form.setValue("avatarPath", path);
+        finalAvatarPath = path;
       }
 
       const { username } = await mutateAsync({
@@ -234,10 +225,23 @@ export default function ProfileDetailsForm(props: {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} className="self-end" type="submit">
-          {isPending && <Loader2 className="w-5 h-5 mr-2 text-inherit animate-spin" />}
-          {isPending ? "Submitting" : "Submit"}
-        </Button>
+        <div className="flex gap-4 justify-end items-center">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              router.push("/");
+              router.refresh();
+            }}
+          >
+            <LogOutIcon className="w-4 h-4 text-destructive mr-2" /> Logout
+          </Button>
+          <Button disabled={isPending} className="self-end" type="submit">
+            {isPending && <Loader2 className="w-5 h-5 mr-2 text-inherit animate-spin" />}
+            {isPending ? "Submitting" : "Submit"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

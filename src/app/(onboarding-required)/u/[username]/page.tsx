@@ -32,7 +32,7 @@ export default async function UserPage(props: Props) {
       <div className="container max-w-2xl py-12">
         <div className="space-y-8">
           <div className="flex items-start gap-6">
-            <Avatar className="w-24 h-24">
+            <Avatar className="w-24 h-24 flex-shrink-0">
               <AvatarImage
                 src={
                   userDetails.avatarPath
@@ -42,8 +42,8 @@ export default async function UserPage(props: Props) {
               />
               <AvatarFallback>{getTwoWordRepresentation(userDetails.display_name)}</AvatarFallback>
             </Avatar>
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-4 w-full flex-1">
+              <div className="w-full space-y-0">
                 <div className="flex items-start gap-4 justify-between">
                   <h2
                     className={cn(
