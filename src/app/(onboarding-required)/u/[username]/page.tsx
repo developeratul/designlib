@@ -65,7 +65,7 @@ export default async function UserPage(props: Props) {
           <Separator />
           <div>
             <div className="flex gap-6 items-start">
-              <div className="bg-primary text-primary-foreground w-12 h-12 flex justify-center items-center rounded-md">
+              <div className="bg-primary/10 border-primary/30 border text-primary w-12 h-12 flex justify-center items-center rounded-md">
                 <DiamondIcon className="w-6 h-6" />
               </div>
               <div className="space-y-2">

@@ -27,7 +27,9 @@ export default function LoginPage() {
       <Card className="w-full max-w-[400px]">
         <CardHeader>
           <CardTitle>Login</CardTitle>
-          <CardDescription>Login to submit resource, create listings and more!</CardDescription>
+          <CardDescription>
+            Login to submit and bookmark resources, create a public profile and more coming!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid w-full items-center gap-2">
