@@ -16,6 +16,12 @@ export async function checkUsernameAvailability(username: string) {
     throw UNAUTHORIZED_ACTION();
   }
 
+  const authUserQuery = await supabase
+    .from("users")
+    .select("username")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
   const parsedUsername = usernameFieldSchema.safeParse(username);
 
   if (!parsedUsername.success) {
@@ -28,7 +34,7 @@ export async function checkUsernameAvailability(username: string) {
     .eq("username", parsedUsername.data)
     .single();
 
-  if (userQuery.data && !userQuery.error) {
+  if (userQuery.data && authUserQuery.data?.username !== userQuery.data.username) {
     return { available: false };
   }
 
@@ -38,9 +44,9 @@ export async function checkUsernameAvailability(username: string) {
 export async function submitProfileDetails(data: z.infer<typeof profileDetailsFormSchema>) {
   const supabase = createServerActionClient<Database>({ cookies });
 
-  const userQuery = await supabase.auth.getUser();
+  const authQuery = await supabase.auth.getUser();
 
-  if (!userQuery.data.user) {
+  if (!authQuery.data.user) {
     throw UNAUTHORIZED_ACTION();
   }
 
@@ -55,10 +61,10 @@ export async function submitProfileDetails(data: z.infer<typeof profileDetailsFo
   const insertQuery = await supabase
     .from("users")
     .insert({
-      id: userQuery.data.user.id,
+      id: authQuery.data.user.id,
       username,
       display_name,
-      email: userQuery.data.user.email,
+      email: authQuery.data.user.email,
       bio,
       avatarPath,
       isOnboarded: true,

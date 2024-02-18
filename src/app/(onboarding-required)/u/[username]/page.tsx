@@ -1,8 +1,9 @@
 import { getAllBookmarksOfAuthUser } from "@/actions/resource.action";
-import { getPublicUserDetails } from "@/actions/user.actions";
+import { getAuthUser, getPublicUserDetails } from "@/actions/user.actions";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import UpdateProfileDetailsModal from "@/components/user/UpdateProfileDetails";
 import { StorageBucket } from "@/constants/supabase";
 import { getTwoWordRepresentation } from "@/helpers";
 import { getFileUrl } from "@/helpers/supabase";
@@ -17,8 +18,10 @@ interface Props {
 
 export default async function UserPage(props: Props) {
   const { params } = props;
+  const authUser = await getAuthUser();
   const userDetails = await getPublicUserDetails(params.username);
   const bookmarks = await getAllBookmarksOfAuthUser();
+  const isSelf = authUser?.username === params.username;
 
   if (!userDetails) {
     return notFound();
@@ -41,9 +44,17 @@ export default async function UserPage(props: Props) {
             </Avatar>
             <div className="space-y-4">
               <div>
-                <h2 className={cn(manrope.className, "font-semibold text-xl text-white")}>
-                  {userDetails.display_name}
-                </h2>
+                <div className="flex items-start gap-4 justify-between">
+                  <h2
+                    className={cn(
+                      manrope.className,
+                      "font-semibold w-full line-clamp-2 text-xl text-white"
+                    )}
+                  >
+                    {userDetails.display_name}
+                  </h2>
+                  {isSelf && <UpdateProfileDetailsModal user={userDetails} />}
+                </div>
                 <p>@{userDetails.username}</p>
               </div>
               <p className="text-sm whitespace-pre-wrap text-muted-foreground">

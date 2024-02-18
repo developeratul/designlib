@@ -25,10 +25,14 @@ export default function ResourceCard(props: Props) {
   const { resource, bookmarks } = props;
 
   return (
-    <Card className="flex flex-col gap-0">
+    <Card className="flex flex-col gap-0 overflow-hidden">
       <CardContent className="p-0 overflow-hidden flex-1 h-full">
         <div className="space-y-4">
-          <Avatar className="rounded-sm aspect-video w-full h-auto border-b">
+          <Avatar
+            className={cn(
+              "rounded-none aspect-video w-full h-auto border-b border-t-0 border-l-0 border-r-0"
+            )}
+          >
             <AvatarImage
               className="object-cover"
               src={getFileUrl(StorageBucket.ResourceThumbnails, resource.thumbnailPath || "")}
