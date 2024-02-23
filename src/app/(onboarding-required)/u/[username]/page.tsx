@@ -3,13 +3,14 @@ import { getAuthUser, getPublicUserDetails } from "@/actions/user.actions";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import UpdateProfileDetailsModal from "@/components/user/UpdateProfileDetails";
 import { StorageBucket } from "@/constants/supabase";
 import { getTwoWordRepresentation } from "@/helpers";
 import { getFileUrl } from "@/helpers/supabase";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { DiamondIcon } from "lucide-react";
+import { DiamondIcon, StarIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -63,18 +64,42 @@ export default async function UserPage(props: Props) {
             </div>
           </div>
           <Separator />
-          <div>
-            <div className="flex gap-6 items-start">
-              <div className="bg-primary/10 border-primary/30 border text-primary w-12 h-12 flex justify-center items-center rounded-md">
-                <DiamondIcon className="w-6 h-6" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Total resources shared</p>
-                <h4 className={cn(manrope.className, "font-bold text-white text-2xl")}>
-                  {userDetails.resources.length}
-                </h4>
-              </div>
-            </div>
+          <div className="grid grid-cols-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex gap-6 items-start">
+                  <div className="bg-primary/10 shrink-0 border-primary/30 border text-primary w-12 h-12 flex justify-center items-center rounded-md">
+                    <DiamondIcon className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">Total resources shared</p>
+                    <h4 className={cn(manrope.className, "font-bold text-white text-2xl")}>
+                      {userDetails.resources.length}
+                    </h4>
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>User&apos;s approved resource submissions</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex gap-6 items-start">
+                  <div className="bg-orange-400/10 shrink-0 border-orange-400/30 border text-orange-400 w-12 h-12 flex justify-center items-center rounded-md">
+                    <StarIcon className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">Featured resources</p>
+                    <h4 className={cn(manrope.className, "font-bold text-white text-2xl")}>
+                      {userDetails.resources.filter((resource) => resource.isFeatured).length}
+                    </h4>
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-sm">
+                User&apos;s featured resource submissions. These are the resources that are
+                recommended by us.
+              </TooltipContent>
+            </Tooltip>
           </div>
           <Separator />
           <div className="space-y-4">

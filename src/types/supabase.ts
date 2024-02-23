@@ -66,6 +66,7 @@ export interface Database {
           description: string | null
           id: number
           isApproved: boolean
+          isFeatured: boolean
           link: string
           slug: string
           thumbnailPath: string | null
@@ -78,6 +79,7 @@ export interface Database {
           description?: string | null
           id?: number
           isApproved?: boolean
+          isFeatured?: boolean
           link?: string
           slug?: string
           thumbnailPath?: string | null
@@ -90,6 +92,7 @@ export interface Database {
           description?: string | null
           id?: number
           isApproved?: boolean
+          isFeatured?: boolean
           link?: string
           slug?: string
           thumbnailPath?: string | null

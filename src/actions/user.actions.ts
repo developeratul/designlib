@@ -42,6 +42,7 @@ export async function getPublicUserDetails(username: string) {
     .from("users")
     .select("id,username,display_name,bio,avatarPath,resources(*)")
     .eq("username", username)
+    .order("isFeatured", { referencedTable: "resources", ascending: false })
     .maybeSingle();
 
   if (userQuery.error) {

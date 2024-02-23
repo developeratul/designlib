@@ -4,10 +4,7 @@ import TopBar from "@/components/layout/TopBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Database } from "@/types/supabase";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { ReactNode } from "react";
 import AppProvider from "../providers/app";
 import "./globals.css";
@@ -19,7 +16,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout(props: Readonly<{ children: ReactNode }>) {
   const { children } = props;
-  const supabase = createServerComponentClient<Database>({ cookies });
   const user = await getAuthUser();
 
   return (

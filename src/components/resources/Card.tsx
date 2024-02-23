@@ -15,6 +15,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Badge } from "../ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface Props {
   resource: ResourceWithMeta;
@@ -23,55 +25,72 @@ interface Props {
 
 export default function ResourceCard(props: Props) {
   const { resource, bookmarks } = props;
-
   return (
-    <Card className="flex flex-col gap-0 overflow-hidden">
-      <CardContent className="p-0 overflow-hidden flex-1 h-full">
-        <div className="space-y-4">
-          <Avatar
-            className={cn(
-              "rounded-none aspect-video w-full h-auto border-b border-t-0 border-l-0 border-r-0"
-            )}
-          >
-            <AvatarImage
-              className="object-cover"
-              src={getFileUrl(StorageBucket.ResourceThumbnails, resource.thumbnailPath || "")}
-              alt={resource.title}
-            />
-            <AvatarFallback className="rounded-sm">
-              <ImageIcon className="w-8 h-8 text-inherit" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="space-y-2 px-6 py-2">
-            <h2 className={cn("line-clamp-1 font-semibold text-white text-lg", manrope.className)}>
-              {resource.title}
-            </h2>
-            {resource.description && (
-              <p className="line-clamp-2 text-foreground text-sm">{resource.description}</p>
-            )}
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between items-center p-6">
-        <div className="flex items-center gap-2">
-          <Link
-            className={buttonVariants({ variant: "secondary" })}
-            href={`/resources/${resource.slug}`}
-          >
-            Show more
-          </Link>
-          <Link
-            className={buttonVariants({ variant: "secondary", size: "icon" })}
-            href={resource.link}
-            target="_blank"
-            referrerPolicy="no-referrer"
-          >
-            <LinkIcon className="w-4 h-4" />
-          </Link>
-        </div>
-        <BookmarkResource resource={resource} bookmarks={bookmarks} />
-      </CardFooter>
-    </Card>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Card
+          className={cn("flex flex-col gap-0", resource.isFeatured && "border-primary relative")}
+        >
+          {resource.isFeatured && (
+            <div className="absolute -top-2 left-0 z-10 w-full flex justify-center items-center">
+              <Badge>Featured</Badge>
+            </div>
+          )}
+          <CardContent className="p-0 overflow-hidden flex-1 h-full">
+            <div className="space-y-4">
+              <Avatar
+                className={cn(
+                  "rounded-tl-lg rounded-tr-lg rounded-bl-none rounded-br-none aspect-video w-full h-auto border-b border-t-0 border-l-0 border-r-0"
+                )}
+              >
+                <AvatarImage
+                  className="object-cover"
+                  src={getFileUrl(StorageBucket.ResourceThumbnails, resource.thumbnailPath || "")}
+                  alt={resource.title}
+                />
+                <AvatarFallback className="rounded-sm">
+                  <ImageIcon className="w-8 h-8 text-inherit" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="space-y-2 px-6 py-2">
+                <h2
+                  className={cn("line-clamp-1 font-semibold text-white text-lg", manrope.className)}
+                >
+                  {resource.title}
+                </h2>
+                {resource.description && (
+                  <p className="line-clamp-2 text-foreground text-sm">{resource.description}</p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between items-center p-6">
+            <div className="flex items-center gap-2">
+              <Link
+                className={buttonVariants({ variant: "secondary" })}
+                href={`/resources/${resource.slug}`}
+              >
+                Show more
+              </Link>
+              <Link
+                className={buttonVariants({ variant: "secondary", size: "icon" })}
+                href={resource.link}
+                target="_blank"
+                referrerPolicy="no-referrer"
+              >
+                <LinkIcon className="w-4 h-4" />
+              </Link>
+            </div>
+            <BookmarkResource resource={resource} bookmarks={bookmarks} />
+          </CardFooter>
+        </Card>
+      </TooltipTrigger>
+      {resource.isFeatured && (
+        <TooltipContent className="shadow-sm shadow-primary">
+          This resource is recommended by us
+        </TooltipContent>
+      )}
+    </Tooltip>
   );
 }
 

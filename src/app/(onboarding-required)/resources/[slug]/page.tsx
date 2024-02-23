@@ -6,6 +6,7 @@ import {
 import { BookmarkResource } from "@/components/resources/Card";
 import ResourcesGrid from "@/components/resources/Grid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { StorageBucket } from "@/constants/supabase";
@@ -69,6 +70,12 @@ export default async function ResourceDetailsPage(props: Props) {
             </h1>
             <p>{resource.description}</p>
           </div>
+          {resource.isFeatured && (
+            <div className="flex items-center gap-2">
+              <Badge>Featured</Badge>
+              <Badge>Recommended by us</Badge>
+            </div>
+          )}
           {resource.user && (
             <div className="text-sm text-muted-foreground font-medium flex items-center gap-2">
               Shared by

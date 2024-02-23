@@ -24,6 +24,7 @@ export async function getCategoryBySlug(slug: string) {
     .select("*,resources(*,user:users(*))")
     .eq("resources.isApproved", true)
     .eq("slug", slug)
+    .order("isFeatured", { referencedTable: "resources", ascending: false })
     .maybeSingle();
 
   if (error) {
