@@ -5,14 +5,17 @@ import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { Boxes } from "../ui/background-boxes";
 import { buttonVariants } from "../ui/button";
 
 export default function Hero() {
   return (
-    <header className="py-28">
+    <header className="lg:py-52 py-24 sm:py-36 relative w-full overflow-hidden bg-background flex flex-col items-center justify-center rounded-lg">
+      <div className="absolute inset-0 w-full h-full bg-background z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+      <Boxes />
       <div className="container">
         <div className="w-full flex flex-col justify-center items-center gap-9 max-w-[900px] mx-auto">
-          <div className="text-center space-y-6">
+          <div className="text-center z-20 space-y-6">
             <h1
               className={cn(
                 manrope.className,
@@ -42,7 +45,7 @@ export default function Hero() {
                 buttonVariants({
                   variant: "default",
                   size: "lg",
-                  className: "text-sm sm:text-base md:text-lg h-auto py-4",
+                  className: "text-sm z-20 sm:text-base md:text-lg h-auto py-4",
                 })
               )}
             >
@@ -53,7 +56,7 @@ export default function Hero() {
                 buttonVariants({
                   variant: "secondary",
                   size: "lg",
-                  className: "text-sm sm:text-base md:text-lg h-auto py-4",
+                  className: "text-sm z-20 sm:text-base md:text-lg h-auto py-4",
                 })
               )}
               href="http://github.com/developeratul/designlib"
