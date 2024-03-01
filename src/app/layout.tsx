@@ -15,7 +15,7 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, "w-screen h-screen antialiased overflow-hidden")}>
+      <body className={cn(inter.className, "antialiased")}>
         <AppProvider>{children}</AppProvider>
       </body>
     </html>
