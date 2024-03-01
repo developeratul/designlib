@@ -1,3 +1,7 @@
+import { getAuthUser } from "@/actions/user.actions";
+import SideBar from "@/components/layout/app/SideBar";
+import TopBar from "@/components/layout/app/TopBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppProps } from "@/types";
 import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -18,7 +22,19 @@ export default async function OnboardingRequiredLayout(props: AppProps) {
     return redirect("/auth/onboarding");
   }
 
-  return children;
+  const user = await getAuthUser();
+
+  return (
+    <div className="flex flex-col w-full h-full">
+      <TopBar user={user} />
+      <div className="w-full flex-1 h-full overflow-hidden flex gap-0 items-stretch">
+        <SideBar user={user} />
+        <ScrollArea className="w-full min-h-full">
+          <div className="w-full h-full">{children}</div>
+        </ScrollArea>
+      </div>
+    </div>
+  );
 }
 
 export const dynamic = "force-dynamic";

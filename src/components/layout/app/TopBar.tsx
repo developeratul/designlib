@@ -1,6 +1,7 @@
 "use client";
 import LogoSrc from "@/assets/logo.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +26,6 @@ import { Loader2, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, buttonVariants } from "../ui/button";
 import { SideBarContent, SideBarFooter } from "./SideBar";
 
 export default function TopBar(props: { user: User | null }) {

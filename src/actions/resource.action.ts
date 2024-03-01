@@ -1,5 +1,5 @@
 "use server";
-import { submitResourceForm } from "@/app/(onboarding-required)/submit/constants";
+import { submitResourceForm } from "@/app/(app)/submit/constants";
 import { StorageBucket } from "@/constants/supabase";
 import { BAD_REQUEST_ACTION, UNAUTHORIZED_ACTION } from "@/lib/exceptions";
 import { Database } from "@/types/supabase";

@@ -1,15 +1,15 @@
 "use client";
 import { getAllCategories } from "@/actions/category.action";
 import NavLink from "@/components/ui/nav-link";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { User } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { BookmarkIcon, HomeIcon, Layers2, LogInIcon, SendIcon } from "lucide-react";
 import Link from "next/link";
-import { ScrollArea } from "../ui/scroll-area";
-import { Skeleton } from "../ui/skeleton";
 
 export default function SideBar(props: { user: User | null }) {
   const { user } = props;

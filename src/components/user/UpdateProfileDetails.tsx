@@ -1,7 +1,7 @@
 "use client";
 import { checkUsernameAvailability } from "@/actions/auth.actions";
 import { updateProfileDetails } from "@/actions/user.actions";
-import { updateProfileDetailsFormSchema } from "@/app/(onboarding-required)/u/[username]/constants";
+import { updateProfileDetailsFormSchema } from "@/app/(app)/u/[username]/constants";
 import {
   Dialog,
   DialogContent,

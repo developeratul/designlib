@@ -1,5 +1,5 @@
 "use server";
-import { updateProfileDetailsFormSchema } from "@/app/(onboarding-required)/u/[username]/constants";
+import { updateProfileDetailsFormSchema } from "@/app/(app)/u/[username]/constants";
 import { onboardingFormSchema } from "@/app/auth/onboarding/constants";
 import { StorageBucket } from "@/constants/supabase";
 import { BAD_REQUEST_ACTION, NOT_FOUND_ACTION, UNAUTHORIZED_ACTION } from "@/lib/exceptions";
