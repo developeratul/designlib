@@ -232,3 +232,19 @@ export async function getAllBookmarksOfAuthUser() {
 
   return bookmarksQuery.data;
 }
+
+export async function getPublicFeaturedResources() {
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const featuredResourcesQuery = await supabase
+    .from("resources")
+    .select("*")
+    .eq("isFeatured", true)
+    .eq("isApproved", true);
+
+  if (featuredResourcesQuery.error) {
+    throw new Error(featuredResourcesQuery.error.message);
+  }
+
+  return featuredResourcesQuery.data;
+}

@@ -11,8 +11,15 @@ export default function ResourcesGrid(props: {
   bookmarks: Bookmark[];
   emptyMessage?: string;
   gridClassName?: string;
+  isFeaturedShowOffNeeded?: boolean;
 }) {
-  const { resources, emptyMessage, bookmarks, gridClassName } = props;
+  const {
+    resources,
+    emptyMessage,
+    bookmarks,
+    gridClassName,
+    isFeaturedShowOffNeeded = true,
+  } = props;
   if (!resources.length) {
     return (
       <div className="w-full flex justify-center items-center py-24">
@@ -43,7 +50,12 @@ export default function ResourcesGrid(props: {
       )}
     >
       {resources.map((resource) => (
-        <ResourceCard bookmarks={bookmarks} resource={resource} key={resource.id} />
+        <ResourceCard
+          isFeaturedShowOffNeeded={isFeaturedShowOffNeeded}
+          bookmarks={bookmarks}
+          resource={resource}
+          key={resource.id}
+        />
       ))}
     </div>
   );

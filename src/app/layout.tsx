@@ -14,7 +14,7 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
   const { children } = props;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className={cn(inter.className, "antialiased")}>
         <AppProvider>{children}</AppProvider>
       </body>

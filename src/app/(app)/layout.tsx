@@ -25,7 +25,7 @@ export default async function OnboardingRequiredLayout(props: AppProps) {
   const user = await getAuthUser();
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-screen h-screen">
       <TopBar user={user} />
       <div className="w-full flex-1 h-full overflow-hidden flex gap-0 items-stretch">
         <SideBar user={user} />

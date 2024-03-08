@@ -21,17 +21,23 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 interface Props {
   resource: ResourceWithMeta;
   bookmarks: Bookmark[];
+  isFeaturedShowOffNeeded?: boolean;
+  className?: string;
 }
 
 export default function ResourceCard(props: Props) {
-  const { resource, bookmarks } = props;
+  const { resource, bookmarks, isFeaturedShowOffNeeded = true, className } = props;
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Card
-          className={cn("flex flex-col gap-0", resource.isFeatured && "border-primary relative")}
+          className={cn(
+            "flex flex-col gap-0",
+            resource.isFeatured && isFeaturedShowOffNeeded && "border-primary relative",
+            className
+          )}
         >
-          {resource.isFeatured && (
+          {resource.isFeatured && isFeaturedShowOffNeeded && (
             <div className="absolute -top-2 left-0 z-10 w-full flex justify-center items-center">
               <Badge>Featured</Badge>
             </div>

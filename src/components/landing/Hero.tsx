@@ -10,7 +10,7 @@ import { buttonVariants } from "../ui/button";
 
 export default function Hero() {
   return (
-    <header className="lg:py-52 py-24 sm:py-36 relative w-full overflow-hidden bg-background flex flex-col items-center justify-center rounded-lg">
+    <header className="lg:py-48 py-24 sm:py-36 relative w-full overflow-hidden bg-background flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-background z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
       <div className="container">

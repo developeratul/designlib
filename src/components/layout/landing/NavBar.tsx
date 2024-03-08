@@ -23,12 +23,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center gap-4">
             <Image src={LogoSrc} width={36} height={36} alt="DesignLib logo" />
-            <h4
-              className={cn(
-                "text-lg font-semibold text-white hidden sm:block tracking-wide",
-                manrope.className
-              )}
-            >
+            <h4 className={cn("text-lg font-semibold text-white tracking-wide", manrope.className)}>
               DesignLib
             </h4>
           </Link>
