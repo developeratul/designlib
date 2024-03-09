@@ -1,42 +1,132 @@
 "use client";
-
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { BookmarkIcon, SearchIcon, ShapesIcon, UserIcon } from "lucide-react";
-import { Card } from "../ui/card";
 
-const featuresList = [
+const steps = [
   {
-    icon: SearchIcon,
-    title: "Browse",
-    description: "Browse through a collection of resources to find the ideal tool for you.",
+    icon: (
+      <svg
+        width="54"
+        height="140"
+        viewBox="0 0 54 140"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_322_1154)">
+          <path
+            d="M26.7695 0H53.9904V140H26.7695V28.7777L0.332031 44.9167V15.75L26.7695 0Z"
+            fill="url(#paint0_linear_322_1154)"
+            fill-opacity="0.6"
+          />
+        </g>
+        <defs>
+          <linearGradient
+            id="paint0_linear_322_1154"
+            x1="26.6019"
+            y1="-63.3844"
+            x2="26.6019"
+            y2="160.93"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#A5A5A5" />
+            <stop offset="1" stop-color="#A5A5A5" stop-opacity="0" />
+          </linearGradient>
+          <clipPath id="clip0_322_1154">
+            <rect width="54" height="140" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    ),
+    title: "Submit a Resource",
+    description:
+      "Your submit the resource by sharing the details. Don't worry the link would be all you'll have to enter.",
   },
   {
-    icon: BookmarkIcon,
-    title: "Bookmark",
-    description: "Access your resources at lightning speed by bookmarking them.",
+    icon: (
+      <svg
+        width="100"
+        height="140"
+        viewBox="0 0 100 140"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_322_1152)">
+          <path
+            d="M0.5875 45.8848C0 32.5573 6.4625 19.4201 16.45 10.8524C26.0458 2.66551 39.1667 0 51.1125 0C65.6042 0 79.3125 4.75984 88.125 15.8027C95.5667 24.1799 99.2875 35.4132 99.2875 46.456C99.2875 65.8761 90.0833 75.2055 73.4375 89.2945L42.3 115.378H96.35V139.749H0V115.378L59.7292 66.257C68.7375 58.8316 71.8708 51.9774 71.8708 46.0753C71.8708 41.125 70.3042 36.1747 66.975 32.1765C62.6667 27.0358 56.5958 24.3704 49.5458 24.3704C44.0625 24.3704 38.775 26.4647 34.8583 30.0822C30.55 34.0805 27.8083 39.9826 28.0042 45.8848H0.5875Z"
+            fill="url(#paint0_linear_322_1152)"
+          />
+        </g>
+        <defs>
+          <linearGradient
+            id="paint0_linear_322_1152"
+            x1="48.6088"
+            y1="-63.2707"
+            x2="48.6088"
+            y2="160.64"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#A5A5A5" />
+            <stop offset="1" stop-color="#A5A5A5" stop-opacity="0" />
+          </linearGradient>
+          <clipPath id="clip0_322_1152">
+            <rect width="100" height="140" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    ),
+    title: "We review it",
+    description:
+      "We will go through your submission. Make necessary edits to it and approve if we find it relevant.",
   },
   {
-    icon: ShapesIcon,
-    title: "Share",
-    description: "Submit your favorite resources and get them featured.",
-  },
-  {
-    icon: UserIcon,
-    title: "Get Featured",
-    description: "The resources shared by you, will be attributed to your profile.",
+    icon: (
+      <svg
+        width="98"
+        height="140"
+        viewBox="0 0 98 140"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_322_1156)">
+          <path
+            d="M89.2037 67.0185C94.4911 75.015 97.4286 84.3444 97.037 93.864C96.6453 106.24 91.162 118.615 81.9578 126.993C72.7536 135.37 60.2203 139.94 47.8828 139.559C35.5453 139.94 23.012 135.18 13.8078 126.802C7.73698 121.281 3.23281 114.046 0.882812 106.049L26.7328 99.3854C27.712 103.003 29.4745 106.24 32.2161 108.905C36.3286 112.903 42.0078 115.188 47.8828 115.188C53.7578 115.188 59.437 112.903 63.5495 108.905C67.662 104.907 70.012 99.3854 70.012 93.864C70.012 88.1522 67.8578 82.4404 63.5495 78.2517C59.2411 74.0631 53.7578 72.3496 47.8828 72.3496C43.9661 72.3496 40.2453 73.4919 36.9161 75.3958L24.9703 55.0237L59.0453 24.3704H6.36615V0H94.4911V25.3223L65.8995 51.2159C75.887 54.0718 83.5245 59.7836 89.2037 67.0185Z"
+            fill="url(#paint0_linear_322_1156)"
+            fill-opacity="0.6"
+          />
+        </g>
+        <defs>
+          <linearGradient
+            id="paint0_linear_322_1156"
+            x1="47.9746"
+            y1="-63.1944"
+            x2="47.9746"
+            y2="160.447"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#A5A5A5" />
+            <stop offset="1" stop-color="#A5A5A5" stop-opacity="0" />
+          </linearGradient>
+          <clipPath id="clip0_322_1156">
+            <rect width="98" height="140" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    ),
+    title: "Get Approved & Featured",
+    description:
+      "Once the resource is approved it will start appearing in the site and also in your profile.",
   },
 ];
 
-export default function Features() {
+export default function SharingProcess() {
   return (
-    <section id="features">
+    <section id="sharing-process">
       <div className="container">
         <div className="space-y-12">
           <div className="space-y-6 w-full max-w-[550px]">
             <h2 className={cn(manrope.className, "text-3xl text-white font-bold")}>
-              A <span className="text-primary">community driven</span> platform made to maximize
-              your productivity.
+              <span className="text-primary">Resource sharing</span> is as easy as pasting a link
+              from your clipboard.
             </h2>
             <svg
               className="w-full max-w-md"
@@ -110,19 +200,45 @@ export default function Features() {
             </svg>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuresList.map((feature, index) => (
-              <Card key={index} className="p-9">
-                <div className="space-y-9">
-                  <feature.icon className="w-[60px] h-[60px] text-primary" strokeWidth={1} />
-                  <div className="space-y-2">
+          <div className="flex items-center justify-center flex-wrap lg:flex-nowrap gap-6">
+            {steps.map((step, index) => (
+              <div key={index} className="flex w-full justify-center gap-6 items-center">
+                <div className="flex flex-col max-w-md justify-center flex-1 w-full items-center">
+                  {step.icon}
+                  <div className="space-y-2 text-center -mt-16">
                     <h3 className={cn(manrope.className, "text-white text-2xl font-semibold")}>
-                      {feature.title}
+                      {step.title}
                     </h3>
-                    <p className="text-foreground">{feature.description}</p>
+                    <p className="text-foreground">{step.description}</p>
                   </div>
                 </div>
-              </Card>
+                {index !== steps.length - 1 && (
+                  <svg
+                    width="59"
+                    height="24"
+                    className="shrink-0 hidden xl:block"
+                    viewBox="0 0 59 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip0_322_1162)">
+                      <path
+                        d="M49.9235 16.0296L47.8024 15.666L45.6707 15.3445C44.9171 15.2228 44.1568 15.1465 43.3941 15.1158C41.3632 15.0629 39.33 15.0789 37.2994 15.1095L31.212 15.2428C28.7156 15.3124 14.2194 15.3736 11.7292 15.5027C10.4825 15.5507 9.24102 15.6421 7.99677 15.7108C6.75712 15.8098 5.51314 15.8855 4.2787 16.0133C3.52178 16.0541 2.76271 16.0274 2.01053 15.9334C1.66344 15.8844 1.33395 15.75 1.05158 15.5423C0.769211 15.3346 0.542788 15.0601 0.392618 14.7434C-0.154402 13.7943 0.124789 12.6769 1.12865 12.3007C1.78067 12.0722 2.46806 11.961 3.15888 11.9725C6.27647 11.9277 9.387 11.6628 12.4673 11.1798C13.3117 10.9827 26.1805 10.9108 27.0458 10.9663C29.719 11.3325 32.3901 11.021 35.0551 11.2352C36.044 11.3111 37.0353 11.348 38.027 11.393C39.0189 11.4282 40.0112 11.4687 41.0003 11.553C44.528 11.8361 48.0425 12.2517 51.5422 12.7618C52.9292 12.9132 54.2346 13.4927 55.2773 14.4197C55.7609 14.8693 55.5949 15.784 54.9551 15.9127C54.0472 16.084 53.1259 16.1747 52.202 16.1837C51.4432 16.1549 50.6867 16.0827 49.9362 15.9675L49.9235 16.0296Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M42.2631 18.6329C43.5815 17.8651 44.9283 17.128 46.3326 16.4634C47.0782 16.1121 47.8327 15.7756 48.579 15.4091C49.8814 14.7371 51.244 14.1886 52.6489 13.7708C54.1249 13.335 55.6538 13.1044 57.1927 13.0856L56.0166 16.8878C54.7405 16.1363 53.4752 15.3649 52.2289 14.5634C47.8704 11.756 43.6793 8.69102 39.608 5.48226C39.0035 4.97366 38.454 4.40296 37.9686 3.77957C37.7506 3.49734 37.6077 3.16448 37.5531 2.81206C37.4986 2.45963 37.5342 2.09913 37.6567 1.7642C37.9591 0.713977 38.9756 0.151009 39.9342 0.597883C40.5457 0.902944 41.1045 1.30404 41.5892 1.78592C43.8483 3.91296 46.3655 5.74799 49.0818 7.24797C49.8312 7.66527 50.65 8.03963 51.249 8.6283C53.17 10.5059 55.5507 11.7499 57.691 13.3248C57.8245 13.4221 57.958 13.5193 58.0926 13.6171L58.2685 13.7452C58.5835 13.9745 58.8145 14.3008 58.9262 14.674C59.0379 15.0472 59.0241 15.4468 58.8868 15.8114C58.7496 16.176 58.4965 16.4855 58.1664 16.6924C57.8363 16.8994 57.4475 16.9923 57.0595 16.9569C55.4981 16.8147 53.8765 17.1559 52.2725 17.6253C49.1276 18.552 46.0765 20.2668 43.1533 22.1837C42.0154 22.9915 40.6753 23.4668 39.2828 23.5567C38.6143 23.5804 38.0808 22.8198 38.4622 22.2693C39.012 21.4827 39.6439 20.7567 40.3471 20.1036C40.9588 19.5831 41.6094 19.1101 42.2931 18.6886L42.2631 18.6329Z"
+                        fill="white"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_322_1162">
+                        <rect width="59" height="24" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -2,6 +2,7 @@ import { getAllBookmarksOfAuthUser, getPublicFeaturedResources } from "@/actions
 import FeaturedResourcesSlider from "@/components/landing/FeaturedResourcesSlider";
 import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
+import SharingProcess from "@/components/landing/SharingProcess";
 
 export default async function Home() {
   const featuredResources = await getPublicFeaturedResources();
@@ -10,8 +11,11 @@ export default async function Home() {
   return (
     <main>
       <Hero />
-      <FeaturedResourcesSlider data={featuredResources} bookmarks={bookmarks} />
-      <Features />
+      <div className="space-y-20">
+        <FeaturedResourcesSlider data={featuredResources} bookmarks={bookmarks} />
+        <Features />
+        <SharingProcess />
+      </div>
     </main>
   );
 }
