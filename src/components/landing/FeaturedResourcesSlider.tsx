@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Bookmark, Resource } from "@/types";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ResourceCard from "../resources/Card";
 
 export default function FeaturedResourcesSlider(props: {
@@ -10,18 +10,13 @@ export default function FeaturedResourcesSlider(props: {
   bookmarks: Bookmark[];
 }) {
   const { data, bookmarks } = props;
+  const [start, setStart] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
   const direction = "right";
   const pauseOnHover = true;
 
-  useEffect(() => {
-    addAnimation();
-  }, []);
-
-  const [start, setStart] = useState(false);
-
-  function addAnimation() {
+  const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
 
@@ -36,7 +31,11 @@ export default function FeaturedResourcesSlider(props: {
       getSpeed();
       setStart(true);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    addAnimation();
+  }, [addAnimation]);
 
   const getDirection = () => {
     if (containerRef.current) {
