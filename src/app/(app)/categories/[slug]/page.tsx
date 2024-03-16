@@ -6,11 +6,26 @@ import { Separator } from "@/components/ui/separator";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { DiamondIcon } from "lucide-react";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const { params } = props;
+  const category = await getCategoryBySlug(params.slug);
+
+  if (!category) {
+    return notFound();
+  }
+
+  return {
+    title: `DesignLib - ${category.title}`,
+    description: category.description,
   };
 }
 

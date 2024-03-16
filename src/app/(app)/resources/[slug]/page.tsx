@@ -15,12 +15,27 @@ import { getFileUrl } from "@/helpers/supabase";
 import { manrope } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon, ImageIcon, LinkIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const { params } = props;
+  const resource = await getResourceBySlug(params.slug);
+
+  if (!resource) {
+    return notFound();
+  }
+
+  return {
+    title: `DesignLib - ${resource.title}`,
+    description: resource.description,
   };
 }
 
