@@ -282,7 +282,6 @@ function FetchInitialData(props: {
       setPending(true);
       const { title, description, ogImagePath } = await mutateAsync(url);
 
-      form.setValue("link", url);
       form.setValue("title", title);
       form.setValue("slug", slugify(title, { lower: true, trim: true }));
       form.setValue("description", description);
@@ -294,6 +293,7 @@ function FetchInitialData(props: {
         toast.error(err.message);
       }
     } finally {
+      form.setValue("link", url);
       setPending(false);
       setFetchedInitialData(true);
     }

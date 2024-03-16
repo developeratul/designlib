@@ -50,7 +50,7 @@ export default function SubmissionSuccessfulPage() {
                 You submission has been received. We appreciate your contribution to the community.
               </p>
             </div>
-            <Link href="/" className="w-full">
+            <Link href="/categories" className="w-full">
               <Button className="w-full">Back to Home</Button>
             </Link>
             {data && (
