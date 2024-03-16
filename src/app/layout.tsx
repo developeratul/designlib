@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "DesignLib - The biggest design library",
     description: "A library of design resources that will save you hours of hunting",
     siteName: "DesignLib",
-    images: ["/og-image.jpg"],
+    images: [`${env.NEXT_PUBLIC_BASE_URL}/og-image.jpg`],
   },
 };
 
