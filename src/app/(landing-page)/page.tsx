@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <main>
       <Hero />
-      <div className="space-y-20">
+      <div className="space-y-20 mb-24">
         <FeaturedResourcesSlider
           totalResourceCount={totalResourcesCount}
           data={featuredResources}
