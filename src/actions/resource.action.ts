@@ -248,3 +248,15 @@ export async function getPublicFeaturedResources() {
 
   return featuredResourcesQuery.data;
 }
+
+export async function getTotalResourceCount() {
+  const supabase = createServerActionClient<Database>({ cookies });
+
+  const resourcesQuery = await supabase.from("resources").select("id").eq("isApproved", true);
+
+  if (resourcesQuery.error) {
+    throw new Error(resourcesQuery.error.message);
+  }
+
+  return resourcesQuery.data.length;
+}

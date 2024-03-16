@@ -44,7 +44,7 @@ export default function Features() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_322_1065)">
+              <g clipPath="url(#clip0_322_1065)">
                 <path
                   d="M1.7895 1.81394C18.8976 1.64825 36.0477 1.5654 53.1558 1.31249C54.4278 1.29505 56.3147 1.19476 57.0275 0.811037C57.6984 0.449119 56.4545 0.265979 55.4341 0.27034C38.326 0.353189 21.2039 0.601735 4.09574 0.771793C2.82381 0.784875 0.894954 0.893886 0.196092 1.27761C-0.474815 1.63517 0.769159 1.83139 1.80347 1.8183L1.7895 1.81394Z"
                   fill="#D1F225"
@@ -112,7 +112,7 @@ export default function Features() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuresList.map((feature, index) => (
-              <Card key={index} className="p-9">
+              <Card key={index} className="p-9 sm:p-6 xl:p-9">
                 <div className="space-y-9">
                   <feature.icon className="w-[60px] h-[60px] text-primary" strokeWidth={1} />
                   <div className="space-y-2">
