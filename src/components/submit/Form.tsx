@@ -113,7 +113,7 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
 
       // Delete the old one if any
       if (thumbnailPath) {
-        await supabase.storage.from(StorageBucket.Avatars).remove([thumbnailPath]);
+        await supabase.storage.from(StorageBucket.ResourceThumbnails).remove([thumbnailPath]);
       }
     }
   };
