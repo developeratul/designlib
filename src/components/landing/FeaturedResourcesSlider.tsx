@@ -1,17 +1,30 @@
 "use client";
 
+import {
+  getAllBookmarksOfAuthUser,
+  getPublicFeaturedResources,
+  getTotalResourceCount,
+} from "@/actions/resource.action";
 import { caveat } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Bookmark, Resource } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { Loader, MessageCircleWarning } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import ResourceCard from "../resources/Card";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
-export default function FeaturedResourcesSlider(props: {
-  data: Resource[];
-  bookmarks: Bookmark[];
-  totalResourceCount: number | null;
-}) {
-  const { data, bookmarks, totalResourceCount = 0 } = props;
+export default function FeaturedResourcesSlider() {
+  const { isPending, data, isError, error } = useQuery({
+    queryKey: ["get-featured-resources-and-others"],
+    queryFn: async () => {
+      const featuredResources = await getPublicFeaturedResources();
+      const bookmarks = await getAllBookmarksOfAuthUser();
+      const totalResourcesCount = await getTotalResourceCount();
+      return { featuredResources, bookmarks, totalResourcesCount };
+    },
+  });
+
   const [start, setStart] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
@@ -36,8 +49,10 @@ export default function FeaturedResourcesSlider(props: {
   }, []);
 
   useEffect(() => {
-    addAnimation();
-  }, [addAnimation]);
+    if (!isPending) {
+      addAnimation();
+    }
+  }, [addAnimation, isPending]);
 
   const getDirection = () => {
     if (containerRef.current) {
@@ -51,12 +66,48 @@ export default function FeaturedResourcesSlider(props: {
     }
   };
 
+  if (isPending) {
+    return (
+      <section id="featured-resources">
+        <div className="container">
+          <div className="flex flex-col justify-center items-center gap-4">
+            <Loader className="w-6 h-6 text-foreground animate-spin" />
+            <p className="text-foreground text-base font-medium text-center w-full">
+              Loading featured resources...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+  if (isError) {
+    return (
+      <section id="featured-resources">
+        <div className="container">
+          <Alert variant="destructive">
+            <MessageCircleWarning className="h-4 w-4" />
+            <AlertTitle>Oops! There was an error.</AlertTitle>
+            <AlertDescription>{error.message}</AlertDescription>
+          </Alert>
+        </div>
+      </section>
+    );
+  }
+
+  const { bookmarks, featuredResources, totalResourcesCount } = data;
+
   return (
-    <section id="featured-resources">
+    <motion.section
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      layout
+      id="featured-resources"
+    >
       <div className="container relative">
         <div className="absolute -top-24 left-6 flex flex-col gap-2 z-20">
           <div className={cn(caveat.className, "font-bold text-2xl text-white")}>
-            {totalResourceCount} resources
+            {totalResourcesCount} resources
           </div>
           <svg
             width="99"
@@ -98,7 +149,7 @@ export default function FeaturedResourcesSlider(props: {
             pauseOnHover && "hover:[animation-play-state:paused]"
           )}
         >
-          {data.map((resource) => (
+          {featuredResources.map((resource) => (
             <ResourceCard
               key={resource.id}
               className="w-[350px] shrink-0 select-none pointer-events-none"
@@ -109,6 +160,6 @@ export default function FeaturedResourcesSlider(props: {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
