@@ -33,7 +33,9 @@ export async function fetchResourceData(url: string) {
       const res = await axios.get(ogImageUrl, { responseType: "arraybuffer" });
       const { error, data } = await supabase.storage
         .from(StorageBucket.ResourceThumbnails)
-        .upload(`${uuid()}.jpg`, res.data);
+        .upload(`${uuid()}.jpg`, res.data, {
+          contentType: "image/jpg",
+        });
 
       if (error) {
         throw new Error(error.message);

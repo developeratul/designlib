@@ -72,7 +72,7 @@ export default async function UserPage(props: Props) {
                     <DiamondIcon className="w-6 h-6" />
                   </div>
                   <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Total resources shared</p>
+                    <p className="text-sm text-muted-foreground">Approved Resources</p>
                     <h4 className={cn(manrope.className, "font-bold text-white text-2xl")}>
                       {userDetails.resources.length}
                     </h4>
@@ -104,11 +104,11 @@ export default async function UserPage(props: Props) {
           <Separator />
           <div className="space-y-4">
             <h2 className={cn(manrope.className, "text-base text-white font-semibold")}>
-              Resources shared
+              Approved Resources
             </h2>
             <ResourcesGrid
               gridClassName="!grid-cols-1 sm:!grid-cols-2"
-              emptyMessage="No resources shared by this user"
+              emptyMessage="No approved resources found."
               resources={userDetails.resources}
               bookmarks={bookmarks}
             />

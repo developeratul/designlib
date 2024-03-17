@@ -117,7 +117,7 @@ export default function UpdateProfileDetailsModal(props: {
 
       const { error, data } = await supabase.storage
         .from(StorageBucket.Avatars)
-        .upload(fileName, file);
+        .upload(fileName, file, { contentType: file.type });
 
       if (error) {
         return toast.error(error.message);
@@ -182,7 +182,7 @@ export default function UpdateProfileDetailsModal(props: {
                         (isUsernameAvailable ? (
                           <div className="h-full top-0 right-0 absolute flex pr-3 justify-center items-center">
                             <Tooltip>
-                              <TooltipTrigger>
+                              <TooltipTrigger asChild>
                                 <CheckIcon className="w-4 h-4 text-green-500" />
                               </TooltipTrigger>
                               <TooltipContent>This username is available</TooltipContent>
@@ -191,7 +191,7 @@ export default function UpdateProfileDetailsModal(props: {
                         ) : (
                           <div className="h-full top-0 right-0 absolute flex pr-3 justify-center items-center">
                             <Tooltip>
-                              <TooltipTrigger>
+                              <TooltipTrigger asChild>
                                 <AlertCircleIcon className="w-4 h-4 text-destructive" />
                               </TooltipTrigger>
                               <TooltipContent>This username is unavailable</TooltipContent>

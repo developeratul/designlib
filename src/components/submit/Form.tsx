@@ -102,7 +102,7 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
 
       const { error, data } = await supabase.storage
         .from(StorageBucket.ResourceThumbnails)
-        .upload(fileName, file);
+        .upload(fileName, file, { contentType: file.type });
 
       if (error) {
         return toast.error(error.message);

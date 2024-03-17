@@ -42,6 +42,7 @@ export async function getPublicUserDetails(username: string) {
     .from("users")
     .select("id,username,display_name,bio,avatarPath,resources(*)")
     .eq("username", username)
+    .eq("resources.isApproved", true)
     .order("isFeatured", { referencedTable: "resources", ascending: false })
     .maybeSingle();
 
@@ -109,7 +110,7 @@ export async function uploadUserAvatarFromUrl(url: string) {
   const res = await axios.get(url, { responseType: "blob" });
   const { error, data } = await supabase.storage
     .from(StorageBucket.Avatars)
-    .upload(`${uuid()}.jpg`, res.data);
+    .upload(`${uuid()}.jpg`, res.data, { contentType: "image/jpg" });
 
   if (error) {
     throw new Error(error.message);
