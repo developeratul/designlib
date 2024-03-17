@@ -107,7 +107,7 @@ export async function uploadUserAvatarFromUrl(url: string) {
     throw UNAUTHORIZED_ACTION();
   }
 
-  const res = await axios.get(url, { responseType: "blob" });
+  const res = await axios.get(url, { responseType: "arraybuffer" });
   const { error, data } = await supabase.storage
     .from(StorageBucket.Avatars)
     .upload(`${uuid()}.jpg`, res.data, { contentType: "image/jpg" });

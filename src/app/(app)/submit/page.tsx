@@ -4,9 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Database } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "DesignLib - Submit resource",
+  description:
+    "Share design resources that you personally use and contribute to the DesignLib community.",
+};
 
 export default async function SubmitResourcePage() {
   const supabase = createServerComponentClient<Database>({ cookies });
