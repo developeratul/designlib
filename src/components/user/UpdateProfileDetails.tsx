@@ -115,16 +115,24 @@ export default function UpdateProfileDetailsModal(props: {
       const file = files[0];
       const fileName = generateUniqueFileName(file.name);
 
-      const { error, data } = await supabase.storage
+      const uploadPromise = supabase.storage
         .from(StorageBucket.Avatars)
         .upload(fileName, file, { contentType: file.type });
 
-      if (error) {
-        return toast.error(error.message);
-      }
+      toast.promise(uploadPromise, {
+        loading: "Uploading avatar...",
+        success: ({ data, error }) => {
+          if (error) {
+            throw new Error(error.message);
+          }
 
-      form.setValue("avatarPath", data.path);
-      toast.success("Avatar uploaded successfully");
+          form.setValue("avatarPath", data.path);
+          return "Avatar uploaded";
+        },
+        error: (error: Error) => {
+          return error.message;
+        },
+      });
 
       // Delete the old one if any
       if (avatarPath) {

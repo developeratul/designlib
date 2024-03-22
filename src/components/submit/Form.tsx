@@ -100,16 +100,24 @@ export default function SubmitResourceForm(props: { categories: Category[] }) {
       const file = files[0];
       const fileName = generateUniqueFileName(file.name);
 
-      const { error, data } = await supabase.storage
+      const uploadPromise = supabase.storage
         .from(StorageBucket.ResourceThumbnails)
         .upload(fileName, file, { contentType: file.type });
 
-      if (error) {
-        return toast.error(error.message);
-      }
+      toast.promise(uploadPromise, {
+        loading: "Uploading thumbnail...",
+        success: ({ data, error }) => {
+          if (error) {
+            throw new Error(error.message);
+          }
 
-      form.setValue("thumbnailPath", data.path);
-      toast.success("Thumbnail uploaded successfully");
+          form.setValue("thumbnailPath", data.path);
+          return "Thumbnail uploaded";
+        },
+        error: (error: Error) => {
+          return error.message;
+        },
+      });
 
       // Delete the old one if any
       if (thumbnailPath) {
