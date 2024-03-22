@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export async function getAllCategories() {
   const supabase = createServerActionClient<Database>({ cookies });
 
-  const { data, error } = await supabase.from("categories").select("*");
+  const { data, error } = await supabase.from("categories").select("*").order("created_at");
 
   if (error) {
     throw new Error(error.message);
@@ -25,6 +25,7 @@ export async function getCategoryBySlug(slug: string) {
     .eq("resources.isApproved", true)
     .eq("slug", slug)
     .order("isFeatured", { referencedTable: "resources", ascending: false })
+    .order("created_at", { referencedTable: "resources" })
     .maybeSingle();
 
   if (error) {

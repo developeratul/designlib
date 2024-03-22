@@ -18,7 +18,8 @@ export default async function BookmarksPage() {
   const bookmarksQuery = await supabase
     .from("bookmarks")
     .select("*,resource:resources(*,user:users(*))")
-    .eq("userId", data.user.id);
+    .eq("userId", data.user.id)
+    .order("created_at", { ascending: false });
 
   if (bookmarksQuery.error) {
     throw new Error(bookmarksQuery.error.message);

@@ -159,7 +159,9 @@ export async function getSimilarResources(currentResourceSlug: string) {
     .select("*,category:categories(*)")
     .eq("isApproved", true)
     .eq("category_id", resource.category_id || "")
-    .neq("slug", currentResourceSlug);
+    .neq("slug", currentResourceSlug)
+    .order("isFeatured", { ascending: false })
+    .order("created_at");
 
   if (error) {
     throw new Error(error.message);
