@@ -12,10 +12,14 @@ export default function Problem() {
     <section id="the-problem">
       <div className="container">
         <div className="space-y-6">
-          <h2 className={cn(manrope.className, "text-3xl max-w-[550px] text-white font-semibold")}>
-            Ever felt lost while <span className="text-primary">gathering resources</span> from
-            various platforms?
-          </h2>
+          <div className="space-y-2">
+            <p className="text-primary font-semibold uppercase text-sm">The Problem</p>
+            <h2
+              className={cn(manrope.className, "text-3xl max-w-[550px] text-white font-semibold")}
+            >
+              Ever felt lost while gathering resources from various platforms?
+            </h2>
+          </div>
           <div className="flex flex-col xl:flex-row items-start gap-12">
             <Image
               className="w-full max-w-2xl rounded-md border"
