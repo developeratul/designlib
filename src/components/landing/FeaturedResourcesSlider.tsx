@@ -33,14 +33,14 @@ export default function FeaturedResourcesSlider() {
 
   const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
-      const scrollerContent = Array.from(scrollerRef.current.children);
+      // const scrollerContent = Array.from(scrollerRef.current.children);
 
-      scrollerContent.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        if (scrollerRef.current) {
-          scrollerRef.current.appendChild(duplicatedItem);
-        }
-      });
+      // scrollerContent.forEach((item) => {
+      //   const duplicatedItem = item.cloneNode(true);
+      //   if (scrollerRef.current) {
+      //     scrollerRef.current.appendChild(duplicatedItem);
+      //   }
+      // });
 
       getDirection();
       getSpeed();
@@ -62,7 +62,7 @@ export default function FeaturedResourcesSlider() {
 
   const getSpeed = () => {
     if (containerRef.current) {
-      containerRef.current.style.setProperty("--animation-duration", "20s");
+      containerRef.current.style.setProperty("--animation-duration", "40s");
     }
   };
 
@@ -144,7 +144,7 @@ export default function FeaturedResourcesSlider() {
         <div
           ref={scrollerRef}
           className={cn(
-            "flex flex-row flex-nowrap gap-4",
+            "flex flex-row w-max flex-nowrap gap-4",
             start && "animate-scroll",
             pauseOnHover && "hover:[animation-play-state:paused]"
           )}
@@ -152,6 +152,15 @@ export default function FeaturedResourcesSlider() {
           {featuredResources.map((resource) => (
             <ResourceCard
               key={resource.id}
+              className="w-[350px] shrink-0 select-none pointer-events-none"
+              isFeaturedShowOffNeeded={false}
+              bookmarks={bookmarks}
+              resource={resource}
+            />
+          ))}
+          {featuredResources.map((resource) => (
+            <ResourceCard
+              key={`${resource.id}-dup`}
               className="w-[350px] shrink-0 select-none pointer-events-none"
               isFeaturedShowOffNeeded={false}
               bookmarks={bookmarks}

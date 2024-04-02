@@ -3,6 +3,7 @@ import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
 import Problem from "@/components/landing/Problem";
 import SharingProcess from "@/components/landing/SharingProcess";
+import Solution from "@/components/landing/Solution";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Home() {
@@ -12,6 +13,10 @@ export default async function Home() {
       <div className="space-y-24 mb-24">
         <FeaturedResourcesSlider />
         <Problem />
+        <div className="container">
+          <Separator />
+        </div>
+        <Solution />
         <div className="container">
           <Separator />
         </div>

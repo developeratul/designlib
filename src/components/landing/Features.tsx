@@ -9,17 +9,17 @@ const featuresList = [
   {
     icon: SearchIcon,
     title: "Browse",
-    description: "Browse through a collection of resources to find the ideal tool for you.",
+    description: "Browse through a collection of resources organized by categories.",
   },
   {
     icon: BookmarkIcon,
     title: "Bookmark",
-    description: "Access your resources at lightning speed by bookmarking them.",
+    description: "Access your resources quickly and easily by bookmarking them.",
   },
   {
     icon: ShapesIcon,
     title: "Share",
-    description: "Submit your favorite resources and get them featured.",
+    description: "Submit your favorite resources and get them added!",
   },
   {
     icon: UserIcon,

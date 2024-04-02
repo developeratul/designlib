@@ -13,7 +13,7 @@ export default function Problem() {
       <div className="container">
         <div className="space-y-6">
           <div className="space-y-2">
-            <p className="text-primary font-semibold uppercase text-sm">The Problem</p>
+            <p className="text-destructive font-semibold uppercase text-sm">The Problem</p>
             <h2
               className={cn(manrope.className, "text-3xl max-w-[550px] text-white font-semibold")}
             >
