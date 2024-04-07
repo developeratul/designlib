@@ -2,6 +2,7 @@ import { env } from "@/env.mjs";
 import { inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { ReactNode } from "react";
 import AppProvider from "../providers/app";
 import "./globals.css";
@@ -42,6 +43,11 @@ export default async function RootLayout(props: Readonly<{ children: ReactNode }
       <body className={cn(inter.className, "antialiased")}>
         <AppProvider>{children}</AppProvider>
       </body>
+      <Script
+        async
+        src="https://us.umami.is/script.js"
+        data-website-id="99ab923d-cf03-43a4-b727-105f7319bbe7"
+      />
     </html>
   );
 }
