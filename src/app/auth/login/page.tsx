@@ -29,7 +29,8 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>
-            Login to submit and bookmark resources, create a public profile and more coming!
+            Login to submit and bookmark resources, create a public profile and get recognized in
+            the community!
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -32,7 +32,7 @@ export function SideBarContent(props: { user: User | null }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-2">
-        <NavLink href="/" icon={<HomeIcon className="w-5 h-5 text-inherit" />}>
+        <NavLink href="/categories" icon={<HomeIcon className="w-5 h-5 text-inherit" />}>
           Home
         </NavLink>
         {!user && (

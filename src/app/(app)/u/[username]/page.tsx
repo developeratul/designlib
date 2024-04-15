@@ -30,7 +30,7 @@ export default async function UserPage(props: Props) {
 
   return (
     <main>
-      <div className="container max-w-2xl py-12">
+      <div className="container max-w-3xl py-12">
         <div className="space-y-8">
           <div className="flex items-start gap-6">
             <Avatar className="w-24 h-24 flex-shrink-0">
