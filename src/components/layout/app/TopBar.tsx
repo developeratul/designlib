@@ -33,7 +33,7 @@ export default function TopBar(props: { user: User | null }) {
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   return (
-    <nav className="py-4 px-4 z-50 sticky w-full top-0 left-0 border-b bg-background/50 backdrop-blur-sm">
+    <nav className="py-4 px-8 z-50 sticky w-full top-0 left-0 border-b bg-background/50 backdrop-blur-sm">
       <div className="flex items-center w-full justify-between">
         <div className="flex items-center gap-4">
           <Sheet>
@@ -54,7 +54,7 @@ export default function TopBar(props: { user: User | null }) {
               </div>
             </SheetContent>
           </Sheet>
-          <Link href="/" className="flex items-center gap-4">
+          <Link href="/categories" className="flex items-center gap-2">
             <Image src={LogoSrc} width={30} height={30} alt="DesignLib logo" />
             <h4
               className={cn(
@@ -64,6 +64,7 @@ export default function TopBar(props: { user: User | null }) {
             >
               DesignLib
             </h4>
+            <div className="text-xs uppercase text-muted-foreground self-end">Beta</div>
           </Link>
         </div>
         {user ? (
