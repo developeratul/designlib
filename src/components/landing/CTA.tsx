@@ -14,9 +14,10 @@ export default function CTA() {
             <h2 className={cn(manrope.className, "text-white text-4xl font-semibold")}>
               Let&apos;s make it big!
             </h2>
-            <p className="text-lg max-w-xl">
+            <p className="text-lg max-w-2xl">
               Let&apos;s make <span className="text-primary">DesignLib</span> the place to seek
-              design resources. Join the community and contribute to it by sharing new resources.
+              design resources. Join the community and contribute to it by sharing new resources. We
+              are currently in beta and accepting resource submissions generously.
             </p>
           </div>
           <Link className={cn(buttonVariants({ variant: "default" }))} href="/auth/login">

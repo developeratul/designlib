@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function SubmitResourcePage() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const categories = await getAllCategories();
+  const categories = await getAllCategories(true);
   const { data } = await supabase.auth.getUser();
   if (data.user) {
     const dbUserQuery = await supabase
