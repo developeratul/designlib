@@ -50,9 +50,18 @@ export default function SubmissionSuccessfulPage() {
                 You submission has been received. We appreciate your contribution to the community.
               </p>
             </div>
-            <Link href="/categories" className="w-full">
-              <Button className="w-full">Back to Home</Button>
-            </Link>
+            <div className="space-y-2 w-full">
+              <Button asChild className="w-full">
+                <Link href="/categories" className="w-full">
+                  Back to Home
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" className="w-full">
+                <Link href="/submit" className="w-full">
+                  Submit another Resource
+                </Link>
+              </Button>
+            </div>
             {data && (
               <Alert className="text-left break-words" variant="info">
                 <InfoIcon className="w-4 h-4 text-inherit" />
